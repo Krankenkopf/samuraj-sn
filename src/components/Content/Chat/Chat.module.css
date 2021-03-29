@@ -1,0 +1,48 @@
+.chat {
+    position: relative;
+    grid-area: content;
+    display: grid;
+    min-height: 547px;
+    grid-template-columns: 3fr 9fr;
+    grid-template-areas: "person messages";
+}
+.link {
+    color: white;
+    text-decoration: none;
+}
+
+.active {
+    color: darkorange;
+}
+
+.person {
+    grid-area: person;
+    padding: 15px;
+}
+.inputArea {
+    grid-area: input;
+    top: 10px;
+}
+.chatArea {
+    grid-area: messages;
+    display: grid;
+    grid-template-rows: 1fr 80px;
+    grid-template-areas: "thread" "input";
+}
+
+.textarea {
+    position: absolute;
+    top: auto;
+    width: 550px;
+    bottom: 30px;
+    resize: none;
+}
+
+.button {
+    position: absolute;
+    bottom: 5px;
+}
+
+
+
+

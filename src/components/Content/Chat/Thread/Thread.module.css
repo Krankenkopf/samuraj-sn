@@ -1,0 +1,31 @@
+
+.link {
+    color: white;
+    text-decoration: none;
+}
+
+.active {
+    color: darkorange;
+}
+
+
+.yourMessage {
+    display: block;
+    margin: 5px 5px 5px auto;
+    padding: 10px;
+    max-width: 400px;
+    float: left;
+    min-width: 100px;
+    color: yellow;
+    background-color: blue;
+    text-align: right;
+    line-break: loose;
+    border: 10px solid black;
+    border-radius: 30px;
+}
+
+.messageArea {
+    grid-area: thread;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(10px, 1fr));
+}

@@ -1,0 +1,17 @@
+.navigation {
+    grid-area: nav;
+    color: #ffffff;
+    background-color: #0f0f0f;
+    text-decoration: none;
+    left: 4px;
+    padding: 20px;
+}
+
+.link {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.active {
+    color: darkorange;
+}

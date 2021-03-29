@@ -1,0 +1,55 @@
+.header {
+    grid-area: header;
+    background-color: #0f0f0f;
+}
+.headerElements {
+    display: grid;
+    grid-template-columns: 4fr 10fr 180px;
+    grid-template-rows: 61px;
+}
+
+.loginBlock {
+    position: relative;
+    top: 1px;
+    border: 5px solid black;
+    border-radius: 10px;
+    background-color: red;
+    padding: 2px;
+}
+
+.login {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+.loginButton {
+
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .appLogo {
+        width: 50px;
+        position: relative;
+        left: 20px;
+        top: 6px;
+        animation: appLogoSpin infinite 9s linear;
+    }
+    @keyframes appLogoSpin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+}
+.appLogo2 {
+    border: 0px solid white;
+    width: 270px;
+    height: 59px;
+    position: relative;
+    left: 185px;
+    object-fit: cover;
+    object-position: 0 -23px;
+}

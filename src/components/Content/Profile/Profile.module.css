@@ -1,0 +1,13 @@
+.profile {
+    padding: 10px;
+}
+
+.profile img {
+    width: 200px;
+    border-radius: 20px;
+}
+
+.status {
+    cursor: pointer;
+    background-color: darkblue;
+}

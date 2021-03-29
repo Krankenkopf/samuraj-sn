@@ -1,0 +1,42 @@
+.contacts {
+    grid-area: content;
+}
+
+.person {
+    display: grid;
+    grid-template-columns: 3fr 10fr;
+    padding: 15px;
+}
+
+.pagination {
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14pt;
+}
+
+.activePage {
+    font-weight: bold;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .preLoader {
+        cursor: pointer;
+        width: 350px;
+        position: absolute;
+        left: 400px;
+        top: 300px;
+        animation: appLogoSpin infinite 1500ms running;
+    }
+    @keyframes appLogoSpin {
+        0% {
+            transform: rotate(0deg);
+        }
+        20% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}

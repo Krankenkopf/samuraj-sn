@@ -1,0 +1,15 @@
+.user {
+    padding: 10px;
+}
+
+.buttonA {
+    background-color: darkorange;
+}
+.buttonC {
+    background-color: chartreuse;
+}
+
+.img {
+    max-width: 100px;
+    border-radius: 50px;
+}

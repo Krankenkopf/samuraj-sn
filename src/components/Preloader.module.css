@@ -1,0 +1,29 @@
+@media (prefers-reduced-motion: no-preference) {
+    .preLoader {
+        cursor: pointer;
+        width: 350px;
+        background: #0f0f0f;
+        border-radius: 150px;
+        position: absolute;
+        margin-top: 10%;
+        margin-left: 22%;
+        animation: appLogoSpin infinite 1500ms running;
+    }
+    @keyframes appLogoSpin {
+        0% {
+            transform: rotate(0deg);
+        }
+        13% {
+            transform: rotate(0deg);
+        }
+        20% {
+            transform: rotate(-20deg);
+        }
+        27% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}
