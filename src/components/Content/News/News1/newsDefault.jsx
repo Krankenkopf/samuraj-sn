@@ -1,6 +1,6 @@
 import classes from "./newsDefault.module.css";
 import React from "react";
-import image01 from "../../../../mistress madness.jpg";
+import image01 from "../../../../assets/mistress madness.jpg";
 
 const Post = (props) => {
     return (

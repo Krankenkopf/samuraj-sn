@@ -1,4 +1,4 @@
-import logo2 from '../../krankenkopf(transparent).png';
+import logo2 from '../../assets/krankenkopf(transparent).png';
 import yticon from '../../yt.png';
 import classes from './MainPage.module.css';
 import React from "react";

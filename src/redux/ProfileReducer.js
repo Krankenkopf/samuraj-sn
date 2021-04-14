@@ -1,5 +1,5 @@
 import {ProfileAPI} from "../api/api";
-import imgdefault from '../default-avatar.png'
+import imgdefault from '../assets/default-avatar.png'
 
 const SET_CURRENT_PROFILE = 'SET_CURRENT_PROFILE'
 const SET_STATUS = 'SET_STATUS'

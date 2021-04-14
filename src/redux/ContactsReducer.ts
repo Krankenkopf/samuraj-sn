@@ -1,4 +1,4 @@
-import imgdefault from  "../default-avatar.png"
+import imgdefault from "../assets/default-avatar.png"
 // @ts-ignore
 import {UsersAPI} from "../api/api";
 

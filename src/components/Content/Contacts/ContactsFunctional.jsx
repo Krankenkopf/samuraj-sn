@@ -1,9 +1,9 @@
 import React from 'react';
 import User from "./Users/User";
 import img1 from "../../../Чaradzей Initial Photosession 3_cr.jpg";
-import img2 from "../../../img613e_cr.jpg";
-import img3 from "../../../ALIM0199_cr.jpg";
-import img4 from "../../../Mooph.png";
+import img2 from "../../../assets/img613e_cr.jpg";
+import img3 from "../../../assets/ALIM0199_cr.jpg";
+import img4 from "../../../assets/Mooph.png";
 import * as axios from 'axios';
 
 const ContactsFunctional = (props) => {

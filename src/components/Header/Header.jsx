@@ -1,5 +1,5 @@
-import logo from '../../logo512.png';
-import logo2 from '../../krankenkopf(transparent).png';
+import logo from '../../assets/logo512.png';
+import logo2 from '../../assets/krankenkopf(transparent).png';
 import classes from './Header.module.css';
 import {NavLink} from "react-router-dom";
 import React from "react";
