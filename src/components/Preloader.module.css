@@ -6,7 +6,7 @@
         border-radius: 150px;
         position: absolute;
         margin-top: 10%;
-        margin-left: 22%;
+        margin-left: 20%;
         animation: appLogoSpin infinite 1500ms running;
     }
     @keyframes appLogoSpin {

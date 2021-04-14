@@ -1,5 +1,7 @@
 import logo from './../logo512.png'
 import classes from './Preloader.module.css'
+import React from "react";
+
 const Preloader = () => {
     return (
         <div>

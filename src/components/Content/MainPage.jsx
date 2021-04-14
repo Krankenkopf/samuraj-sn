@@ -4,7 +4,7 @@ import classes from './MainPage.module.css';
 import React from "react";
 import NewsContainer from "./News/NewsContainer";
 
-const MainPage = (props) => {
+const MainPage = () => {
     return (
         <div className={classes.mainPage}>
             <div>

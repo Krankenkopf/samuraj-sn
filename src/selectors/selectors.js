@@ -5,7 +5,7 @@ export const selectCurrentStatus = (state) => (state.Profile.CurrentProfileStatu
 export const selectIsAuth = (state) => (state.Auth.isAuth)
 export const selectLogin = (state) => (state.Auth.login)
 export const selectMyId = (state) => (state.Auth.id)
-export const selectPersonalData = (state) => (state.Chat.PersonalData)
+export const selectPersonalData = (state) => (state.Chat.PersonsData)
 export const selectThreads = (state) => (state.Chat.Threads)
 export const selectUsers = (state) => (state.Contacts.Users)
 export const usersSelector = createSelector(selectUsers, (users) => {

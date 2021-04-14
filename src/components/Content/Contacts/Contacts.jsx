@@ -29,7 +29,7 @@ const Contacts = (props) => {
     })
     return (
         <>
-            {props.isFetching ? <Preloader onClick={e => props.isFetchingSwitch(200)}/> : null}
+            {props.isFetching ? <Preloader onClick={() => props.isFetchingSwitch(200)}/> : null}
             <div>
                 <div className={classes.pagination}>
                     {pages}

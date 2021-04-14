@@ -10,7 +10,7 @@ import {
     toggleFollowingInProgress,
     setUsers
 } from "../../../redux/ContactsReducer";
-import {selectUsers, usersSelector} from "../../../selectors/selectors";
+import {usersSelector} from "../../../selectors/selectors";
 
 class ContactsContainer extends React.Component {
 

@@ -3,14 +3,21 @@ import {stopSubmit} from "redux-form";
 
 const AUTH = 'AUTH'
 
-let initialState = {
+type InitialStateType = {
+    email: string | null
+    id: number | null
+    login: string
+    isAuth: boolean
+}
+
+const initialState: InitialStateType = {
     email: null,
     id: null,
     login: 'Not logged',
     isAuth: false
 }
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action: any) => {
     switch (action.type) {
         case AUTH:
             if (action.resultCode === 0)
@@ -33,16 +40,39 @@ const authReducer = (state = initialState, action) => {
 
 }
 
-export const auth = ({resultCode, email, id, login}) => {
+type AuthActionType = {
+    type: typeof AUTH
+    data: {
+        email: string | null
+        id: number | null
+        login: string | null
+    }
+    resultCode: number
+}
+
+type AuthDataType = {
+    resultCode: number
+    email: string | null
+    id: number | null
+    login: string | null
+}
+
+export const auth = ({resultCode, email, id, login}: AuthDataType): AuthActionType => {
     return {type: 'AUTH', data: {email, id, login}, resultCode: resultCode}
 }
 
-export const authMe = () => async (dispatch) => {
-    const authData = await AuthAPI.authMe()
+export const authMe = () => async (dispatch: any) => {
+    const authData: AuthDataType = await AuthAPI.authMe()
     dispatch(auth(authData))
 }
 
-export const login = ({email, password, rememberMe}) => async (dispatch) => {
+type LoginDataType = {
+    email: string | null
+    password: string | null
+    rememberMe: boolean
+}
+
+export const login = ({email, password, rememberMe}: any) => async (dispatch: any) => {
     const response = await AuthAPI.login(email, password, rememberMe)
     if (response.data.resultCode === 0) {
         dispatch(authMe())
@@ -51,7 +81,7 @@ export const login = ({email, password, rememberMe}) => async (dispatch) => {
         dispatch(action)
     }
 }
-export const logout = () => async (dispatch) => {
+export const logout = () => async (dispatch: any) => {
     const response = await AuthAPI.logout()
     if (response.data.resultCode === 0) {
         dispatch(authMe())

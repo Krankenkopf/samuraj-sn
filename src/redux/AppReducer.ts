@@ -2,11 +2,15 @@ import {authMe} from "./AuthReducer";
 
 const SET_INITIALISING_STATUS = 'SET_INITIALISING_STATUS'
 
-let initialState = {
+type InitialStateType = {
+    initialisingComplete: boolean
+}
+
+let initialState: InitialStateType = {
     initialisingComplete: false
 }
 
-const appReducer = (state=initialState, action) => {
+const appReducer = (state=initialState, action: any) => {
     switch (action.type) {
         case SET_INITIALISING_STATUS: {
             return {
@@ -18,9 +22,12 @@ const appReducer = (state=initialState, action) => {
     }
 }
 
-const initialisingComplete = () => ({type: SET_INITIALISING_STATUS})
 
-export const initializeApp = () => async (dispatch) => {
+type InitialisingCompleteActionType = { type: typeof SET_INITIALISING_STATUS}
+
+const initialisingComplete = ():InitialisingCompleteActionType  => ({type: SET_INITIALISING_STATUS})
+
+export const initializeApp = () => async (dispatch: any) => {
     await dispatch(authMe())
     dispatch(initialisingComplete())
 }
