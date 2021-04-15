@@ -9,7 +9,7 @@ const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const IS_FETCHING_SWITCH = 'IS_FETCHING_SWITCH';
 const TOGGLE_FOLLOWING_IN_PROGRESS = 'TOGGLE_FOLLOWING_IN_PROGRESS'
 
-type IncomingDataUserType = {
+export type IncomingDataUserType = {
     id: number
     name: string,
     status: string | null,
@@ -20,7 +20,7 @@ type IncomingDataUserType = {
     }
 }
 
-type InternalDataUserType = {
+export type InternalDataUserType = {
     id: number
     firstName: string,
     pastName: string,
@@ -30,6 +30,8 @@ type InternalDataUserType = {
     position: string | null
 
 }
+
+type TInitialState = typeof initialState
 
 const initialState = {
     Users: [] as Array<InternalDataUserType>,
@@ -50,7 +52,7 @@ const initialState = {
     FibArray: [] as Array<number>
 }
 initialState.fib()
-const contactsReducer = (state = initialState, action: any) => {
+const contactsReducer = (state = initialState, action: any): TInitialState => {
     switch (action.type) {
         case TOGGLE: {
             return {
@@ -127,7 +129,7 @@ const contactsReducer = (state = initialState, action: any) => {
             if (state.UserFollowingInProgress.find(id => id === action.id) === action.id)
                 return {
                     ...state,
-                    UserFollowingInProgress: state.UserFollowingInProgress.map(id => id !== action.id)
+                    UserFollowingInProgress: state.UserFollowingInProgress.filter(id => id !== action.id)
                 }
             else return {
                 ...state,

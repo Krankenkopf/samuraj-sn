@@ -4,7 +4,14 @@ import classes from './Header.module.css';
 import {NavLink} from "react-router-dom";
 import React from "react";
 
-const Header = (props) => {
+type PropsType = {
+    login: string,
+    myId: number | null,
+    isAuth: boolean,
+    logout: () => void
+}
+
+const Header = (props: PropsType) => {
     return (<header className={classes.header}>
             <div className={classes.headerElements}>
                 <div>
@@ -33,7 +40,6 @@ const Header = (props) => {
                             </NavLink>}
                     </div>
                 </div>
-
             </div>
         </header>
     )

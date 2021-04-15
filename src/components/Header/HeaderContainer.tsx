@@ -3,9 +3,20 @@ import Header from "./Header";
 import {connect} from "react-redux";
 import {logout} from "../../redux/AuthReducer";
 import {selectIsAuth, selectLogin, selectMyId} from "../../selectors/selectors";
+import {TState} from "../../redux/store";
 
 
-class HeaderContainer extends React.Component {
+type TMappedState = {
+    login: string,
+    myId: number | null,
+    isAuth: boolean
+}
+
+type TDispatchProps = {
+    logout: () => void
+}
+
+class HeaderContainer extends React.Component<TMappedState & TDispatchProps> {
 
     render() {
         return (
@@ -14,7 +25,7 @@ class HeaderContainer extends React.Component {
     }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: TState): TMappedState => {
     return {
         login: selectLogin(state),
         myId: selectMyId(state),
@@ -23,4 +34,4 @@ let mapStateToProps = (state) => {
 
 }
 
-export default connect(mapStateToProps, {logout})(HeaderContainer);
+export default connect<TMappedState, TDispatchProps, {}, TState>(mapStateToProps, {logout})(HeaderContainer)

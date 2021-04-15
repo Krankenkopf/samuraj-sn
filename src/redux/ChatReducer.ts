@@ -1,12 +1,12 @@
 const SetThread = 'SET-THREAD';
 const AddMessage = 'ADD-MESSAGE';
 
-type PersonDataType = {
+export type PersonDataType = {
     person: string
     id: number
 }
 
-type ThreadType = {
+export type ThreadType = {
     id: number
     messages: Array<{
         message: string
@@ -16,12 +16,12 @@ type ThreadType = {
     isActive: boolean
 }
 
-type InitialStateType = {
+type TInitialState = {
     PersonsData: Array<PersonDataType>
     Threads: Array<ThreadType>
 }
 
-const initialState: InitialStateType = {
+const initialState: TInitialState = {
         PersonsData: [
             {person: "Hermann Schulze", id: 1},
             {person: "Alexandre Pripyatsky", id: 2},
@@ -83,7 +83,7 @@ const initialState: InitialStateType = {
         ]
     }
 
-const chatReducer = (state=initialState, action: any) => {
+const chatReducer = (state=initialState, action: any): TInitialState => {
     switch (action.type) {
         case SetThread:
         {
@@ -114,7 +114,7 @@ const chatReducer = (state=initialState, action: any) => {
     }
 }
 
-type SetThreadActionType = {
+export type SetThreadActionType = {
     type: typeof SetThread
     id: number
 }
@@ -122,7 +122,7 @@ export const setThread = (id: number): SetThreadActionType => {
     return {type: SetThread, id: id};
 }
 
-type AddMessageActionType = {
+export type AddMessageActionType = {
     type: typeof AddMessage
     message: string
     id: number

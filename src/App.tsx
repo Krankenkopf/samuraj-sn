@@ -16,20 +16,28 @@ import {connect} from "react-redux";
 import {initializeApp} from "./redux/AppReducer";
 import {compose} from "redux";
 import Preloader from "./components/Preloader";
+import {TState} from "./redux/store";
 
-class App extends React.Component {
+type TMappedState = {
+  initialisingComplete: boolean
+}
+
+type TDispatchProps = {
+  initializeApp: () => (dispatch:any) => Promise<void>
+}
+
+class App extends React.Component<TMappedState & TDispatchProps> {
   componentDidMount() {
-    // @ts-ignore
     this.props.initializeApp()
   }
   render() {
-    // @ts-ignore
     if (!this.props.initialisingComplete)
       return (
           <div className={'background'}>
             <Preloader />
           </div>
       )
+
     return (
         <BrowserRouter>
           <div className='app-wrapper'>
@@ -42,6 +50,7 @@ class App extends React.Component {
               <Route path='/activities' render={() => <Activities/>}/>
               <Route path='/contacts' render={() => <ContactsContainer/>}/>
               <Route path='/profile/:id?' render={() => <ProfileContainer/>}/>
+              {/*@ts-ignore*/}
               <Route path='/chat' render={() => <ChatContainer/>}/>
               <Route path='/ads' render={() => <Ads/>}/>
             </div>
@@ -53,13 +62,14 @@ class App extends React.Component {
   }
 }
 
-let mapStateToProps = (state: any): any => {
+let mapStateToProps = (state: TState): TMappedState => {
   return {
     initialisingComplete: state.App.initialisingComplete
   }
 }
 
 export default compose(
-    connect(mapStateToProps, {initializeApp}),
+/*<TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultState>*/
+    connect<TMappedState, TDispatchProps, {}, TState>(mapStateToProps, {initializeApp}),
     withRouter)
 (App)

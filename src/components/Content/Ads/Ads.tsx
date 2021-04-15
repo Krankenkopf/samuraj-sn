@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './Ads.module.css';
 
 const Ads = () => {
-    let cycle = []
+    const cycle = []
     for (let i = 1; i <= 10000; i++) {
         cycle.push(<span> {Math.floor(Math.random()*2)} </span>)
     }

@@ -2,15 +2,15 @@ import {authMe} from "./AuthReducer";
 
 const SET_INITIALISING_STATUS = 'SET_INITIALISING_STATUS'
 
-type InitialStateType = {
+type TInitialState = {
     initialisingComplete: boolean
 }
 
-let initialState: InitialStateType = {
+let initialState: TInitialState = {
     initialisingComplete: false
 }
 
-const appReducer = (state=initialState, action: any) => {
+const appReducer = (state=initialState, action: any): TInitialState => {
     switch (action.type) {
         case SET_INITIALISING_STATUS: {
             return {

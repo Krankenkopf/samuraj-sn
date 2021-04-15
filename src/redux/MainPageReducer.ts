@@ -1,4 +1,6 @@
-const AddPost = 'ADD-POST';
+const ADD_POST = 'ADD-POST';
+
+type TInitialState = typeof initialState
 
 let initialState = {
         Texts: [
@@ -6,12 +8,12 @@ let initialState = {
             {text: "post 2"},
             {text: "post 3"},
             {text: "post 4"}
-        ],
+        ]
 }
 
-const mainPageReducer = (state=initialState, action) => {
+const mainPageReducer = (state=initialState, action: AddPostActionType): TInitialState => {
     switch (action.type) {
-        case AddPost: {
+        case ADD_POST: {
             let newPost = {
                 text: action.post
             }
@@ -25,7 +27,12 @@ const mainPageReducer = (state=initialState, action) => {
     }
 }
 
-export const addPost = (post) => {
-    return {type: AddPost, post: post};
+type AddPostActionType = {
+    type: typeof ADD_POST
+    post: string
 }
-export default mainPageReducer;
+
+export const addPost = (post: string): AddPostActionType => {
+    return {type: ADD_POST, post: post};
+}
+export default mainPageReducer

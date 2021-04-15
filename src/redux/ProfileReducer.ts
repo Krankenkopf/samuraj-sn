@@ -6,19 +6,21 @@ const SET_STATUS = 'SET_STATUS'
 const UPDATE_STATUS = 'UPDATE_STATUS'
 const CLEAR_CURRENT_PROFILE = 'CLEAR_CURRENT_PROFILE'
 
+type TInitialState = typeof initialState
+
+
 let initialState = {
-    MyProfile: null,
-    CurrentProfile: null,
+    MyProfile: null as object | null,
+    CurrentProfile: null as object | null,
     CurrentProfileStatus: '---'
 }
 
-const profileReducer = (state = initialState, action) => {
+const profileReducer = (state = initialState, action: any): TInitialState => {
     switch (action.type) {
         case SET_CURRENT_PROFILE: {
             if (action.data.photos.large === null) {
                 action.data.photos.large = imgdefault
             }
-
             return {
                 ...state,
                 CurrentProfile: action.data
@@ -43,42 +45,61 @@ const profileReducer = (state = initialState, action) => {
         default:
             return state
     }
-
 }
 
-export const setCurrentProfile = (data) => {
+type SetCurrentProfileActionType = {
+    type: typeof SET_CURRENT_PROFILE
+    data: object
+}
+
+export const setCurrentProfile = (data: object): SetCurrentProfileActionType => {
     return {type: SET_CURRENT_PROFILE, data: data}
 }
-export const setCurrentProfileStatus = (status) => {
+
+type SetCurrentProfileStatusActionType = {
+    type: typeof SET_STATUS
+    status: string
+}
+
+export const setCurrentProfileStatus = (status: string): SetCurrentProfileStatusActionType => {
     return {type: SET_STATUS, status: status}
 }
 
-export const updateStatus = (status) => {
+type UpdateStatusActionType = {
+    type: typeof UPDATE_STATUS
+    status: string
+}
+
+export const updateStatus = (status: string): UpdateStatusActionType => {
     return {type: UPDATE_STATUS, status: status}
 }
 
-export const clearCurrentProfile = () => {
+type ClearCurrentProfileActionType = {
+    type: typeof CLEAR_CURRENT_PROFILE
+}
+
+export const clearCurrentProfile = (): ClearCurrentProfileActionType => {
     return {type: CLEAR_CURRENT_PROFILE}
 }
 
-export const getCurrentProfile = (userId) => {
-    return (dispatch) => {
+export const getCurrentProfile = (userId: number) => {
+    return (dispatch: Function) => {
         ProfileAPI.getCurrentProfile(userId).then(data => {
             dispatch(setCurrentProfile(data))
         })
     }
 }
 
-export const getCurrentProfileStatus = (userId) => {
-    return (dispatch) => {
+export const getCurrentProfileStatus = (userId: number) => {
+    return (dispatch: any) => {
         ProfileAPI.getCurrentProfileStatus(userId).then(status => {
             dispatch(setCurrentProfileStatus(status))
         })
     }
 }
 
-export const sendToUpdateStatus = (status) => {
-    return (dispatch) => {
+export const sendToUpdateStatus = (status: string) => {
+    return (dispatch: any) => {
         ProfileAPI.sendToUpdateStatus(status).then(resultCode => {
             if (resultCode === 0)
                 dispatch(updateStatus(status))

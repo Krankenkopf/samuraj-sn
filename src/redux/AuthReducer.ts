@@ -3,21 +3,21 @@ import {stopSubmit} from "redux-form";
 
 const AUTH = 'AUTH'
 
-type InitialStateType = {
+type TInitialState = {
     email: string | null
     id: number | null
     login: string
     isAuth: boolean
 }
 
-const initialState: InitialStateType = {
+const initialState: TInitialState = {
     email: null,
     id: null,
     login: 'Not logged',
     isAuth: false
 }
 
-const authReducer = (state = initialState, action: any) => {
+const authReducer = (state = initialState, action: any): TInitialState => {
     switch (action.type) {
         case AUTH:
             if (action.resultCode === 0)
