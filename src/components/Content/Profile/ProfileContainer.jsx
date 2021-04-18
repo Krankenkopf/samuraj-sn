@@ -1,16 +1,26 @@
 import React from 'react'
 import {connect} from "react-redux";
-import {getCurrentProfile,
+import {
+    getCurrentProfile,
     getCurrentProfileStatus,
     sendToUpdateStatus,
-    clearCurrentProfile} from "../../../redux/ProfileReducer";
+    clearCurrentProfile, sendToUpdateProfileData, sendToUpdateProfilePhoto
+} from "../../../redux/ProfileReducer";
 import Profile from './Profile'
 import {Redirect, withRouter} from "react-router-dom";
 import {compose} from "redux";
-import {selectMyId, selectCurrentProfile, selectIsAuth, selectCurrentStatus} from "../../../selectors/selectors";
+import {
+    selectMyId,
+    selectCurrentProfile,
+    selectIsAuth,
+    selectCurrentStatus,
+    selectCurrentProfilePhotos
+} from "../../../selectors/selectors";
+import PreLoader from "../../Preloader";
 
 class ProfileContainer extends React.Component {
-    componentDidMount() {
+
+    refreshProfile() {
         if (this.props.match.params.id) {
             this.props.getCurrentProfile(this.props.match.params.id)
             this.props.getCurrentProfileStatus(this.props.match.params.id)
@@ -19,14 +29,28 @@ class ProfileContainer extends React.Component {
             this.props.getCurrentProfileStatus(this.props.myId)
         }
     }
+
+    componentDidMount() {
+        this.refreshProfile()
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.match.params.id !== this.props.match.params.id) {
+            this.refreshProfile()
+        }
+    }
+
     componentWillUnmount() {
         this.props.clearCurrentProfile()
-        }
+    }
 
     render() {
-        if (!this.props.isAuth && !this.props.match.params.id) {
-            return <Redirect to={'/login'} />
-        }
+        if (!this.props.isAuth && !this.props.match.params.id)
+            return <Redirect to={'/login'}/>
+        else if (this.props.CurrentProfile === null )
+            return <PreLoader/>
+        else if (this.props.isAuth && this.props.CurrentProfile.userId === this.props.myId)
+            return <Profile isAuthedOwner={true} {...this.props}/>
         else return <Profile {...this.props}/>
     }
 }
@@ -34,6 +58,7 @@ class ProfileContainer extends React.Component {
 let mapStateToProps = (state) => {
     return {
         CurrentProfile: selectCurrentProfile(state),
+        CurrentProfilePhotos: selectCurrentProfilePhotos(state),
         CurrentStatus: selectCurrentStatus(state),
         isAuth: selectIsAuth(state),
         myId: selectMyId(state)
@@ -41,9 +66,13 @@ let mapStateToProps = (state) => {
 }
 
 export default compose(
-    connect(mapStateToProps,{getCurrentProfile,
-    getCurrentProfileStatus,
-    sendToUpdateStatus,
-    clearCurrentProfile}),
+    connect(mapStateToProps, {
+        getCurrentProfile,
+        getCurrentProfileStatus,
+        sendToUpdateStatus,
+        sendToUpdateProfileData,
+        sendToUpdateProfilePhoto,
+        clearCurrentProfile
+    }),
     withRouter)
 (ProfileContainer)

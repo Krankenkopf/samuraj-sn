@@ -1,13 +1,107 @@
 .profile {
     padding: 10px;
+    display: grid;
+    grid-template-rows: calc(100px + 10vw) 1fr;
+    grid-template-columns: calc(100px + 10vw) 1fr;
+    grid-template-areas: 'ava data'
+    'content content';
 }
 
-.profile img {
-    width: 200px;
-    border-radius: 20px;
+.data {
+    grid-area: data;
+    margin: -20px 10px 0 ;
 }
+
+.avaContent {
+    grid-area: ava;
+    display: grid;
+}
+
+.avaContent img {
+    grid-area: ava;
+    width: calc(100px + 10vw);
+    border-radius: 1vw;
+}
+
+.avaBox {
+    grid-area: ava;
+    position: relative;
+    margin: auto;
+    padding: 1vw;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 1vw;
+}
+
+.avaBoxHidden{
+    visibility: hidden;
+}
+
+
+.avaBox input {
+    width: calc(10px + 5vw);
+    display: table;
+    text-align: center;
+    margin: 1vw auto;
+}
+
+.avaBox input:hover {
+    filter: invert(16%) sepia(81%) saturate(3351%) hue-rotate(354deg) brightness(103%) contrast(103%);
+}
+
+.avaBox input:active {
+    filter: invert(80%) sepia(92%) saturate(5711%) hue-rotate(356deg) brightness(105%) contrast(127%);
+}
+
+/*--------------------------------------------------------------------*/
 
 .status {
+    grid-area: data;
+    display: inline-block;
     cursor: pointer;
-    background-color: darkblue;
+    background-color: black;
+    border-radius: 1vw;
+    padding: 0.5vw 0 0.5vw 0;
+}
+
+.cfgBtn {
+    grid-area: data;
+    position: relative;
+    margin-left: auto;
+    width: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.cfgBtn:focus {
+    outline: none;
+}
+
+.cfgBtn:hover {
+    filter: invert(1);
+    background-color: blue;
+    box-shadow: 0 0 3px 3px blue;
+}
+
+.cfgBtn:active {
+    filter: invert(1);
+    background-color: cyan;
+    box-shadow: 0 0 3px 3px cyan;
+}
+.cfgBtn:disabled {
+    visibility: hidden;
+}
+
+.formBox {
+/*    position: relative;*/
+    grid-area: content;
+    z-index: 1;
+    margin: calc(-50px - 10vw) 4vw 50px 4vw;
+    padding: 2vh;
+    background-color: #fff;
+    color: #000;
+    border-radius: 2vw;
+    box-shadow: 0 0 5px 5px #000;
+}
+
+.preview {
+    width: calc(100px + 10vw);
 }

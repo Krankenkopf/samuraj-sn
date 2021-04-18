@@ -1,5 +1,8 @@
-import {AuthAPI} from "../api/api";
-import {stopSubmit} from "redux-form";
+import {AuthAPI, ResultCodes} from "../api/api";
+import {FormAction, stopSubmit} from "redux-form";
+import {ThunkAction} from "redux-thunk";
+import {TState} from "./store";
+import {TFormData} from "../components/Login/Login";
 
 const AUTH = 'AUTH'
 
@@ -9,6 +12,8 @@ type TInitialState = {
     login: string
     isAuth: boolean
 }
+
+type TActions = AuthActionType | FormAction
 
 const initialState: TInitialState = {
     email: null,
@@ -20,7 +25,7 @@ const initialState: TInitialState = {
 const authReducer = (state = initialState, action: any): TInitialState => {
     switch (action.type) {
         case AUTH:
-            if (action.resultCode === 0)
+            if (action.resultCode === ResultCodes.SUCCESS)
                 return {
                     ...state,
                     ...action.data,
@@ -61,21 +66,17 @@ export const auth = ({resultCode, email, id, login}: AuthDataType): AuthActionTy
     return {type: 'AUTH', data: {email, id, login}, resultCode: resultCode}
 }
 
-export const authMe = () => async (dispatch: any) => {
+export type TAuthThunk = ThunkAction<Promise<void>, TState, any, TActions>
+
+export const authMe = (): TAuthThunk => async (dispatch) => {
     const authData: AuthDataType = await AuthAPI.authMe()
     dispatch(auth(authData))
 }
 
-type LoginDataType = {
-    email: string | null
-    password: string | null
-    rememberMe: boolean
-}
-
-export const login = ({email, password, rememberMe}: any) => async (dispatch: any) => {
-    const response = await AuthAPI.login(email, password, rememberMe)
-    if (response.data.resultCode === 0) {
-        dispatch(authMe())
+export const login = ({email, password, rememberMe}: TFormData): TAuthThunk => async (dispatch) => {
+    const response = await AuthAPI.login({email, password, rememberMe})
+    if (response.data.resultCode === ResultCodes.SUCCESS) {
+        await dispatch(authMe())
     } else {
         let action = stopSubmit('login', {email: response.data.messages[0], password: response.data.messages[0]})
         dispatch(action)
@@ -83,7 +84,7 @@ export const login = ({email, password, rememberMe}: any) => async (dispatch: an
 }
 export const logout = () => async (dispatch: any) => {
     const response = await AuthAPI.logout()
-    if (response.data.resultCode === 0) {
+    if (response.data.resultCode === ResultCodes.SUCCESS) {
         dispatch(authMe())
     }
 }

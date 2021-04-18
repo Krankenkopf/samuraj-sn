@@ -1,7 +1,7 @@
 .navigation {
     grid-area: nav;
     color: #ffffff;
-    background-color: #0f0f0f;
+    background-color: #202020;
     text-decoration: none;
     left: 4px;
     padding: 20px;
@@ -14,4 +14,26 @@
 
 .active {
     color: darkorange;
+}
+
+@media all and (max-width: 700px) {
+    .navigation {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        grid-gap: 5px;
+        background-color: #fff;
+        padding: 0;
+        left: 0;
+    }
+    .navigation div {
+        display: flex;
+        flex-direction: column;
+        padding: 2px;
+        align-items: center;
+        background-color: #202020;
+    }
+    .navigation div a {
+        margin: auto;
+        text-align: center;
+    }
 }

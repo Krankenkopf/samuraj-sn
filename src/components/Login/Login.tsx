@@ -2,7 +2,7 @@ import React, {FunctionComponent} from 'react'
 import {Field, reduxForm} from "redux-form";
 import {Input} from "../Common/FormsControls/FormsControls";
 import {requiredField} from "../../utilities/Validators";
-import {login} from "../../redux/AuthReducer";
+import {login, TAuthThunk} from "../../redux/AuthReducer";
 import {connect, Matching} from "react-redux";
 import {Redirect} from "react-router-dom";
 import classes from './Login.module.css'
@@ -14,7 +14,7 @@ type TMappedState = {
 }
 
 type TDispatchProps = {
-    login:  ({email, password, rememberMe}: TFormData) => (dispatch: any) => Promise<void>
+    login:  ({email, password, rememberMe}: TFormData) => TAuthThunk
 }
 
 const LoginForm = (props: any) => {
@@ -41,7 +41,7 @@ let mapStateToProps = (state: TState) => {
     }
 }
 
-type TFormData = {
+export type TFormData = {
     email: string
     password: string
     rememberMe: boolean

@@ -11,7 +11,7 @@ export type ThreadType = {
     messages: Array<{
         message: string
         id: number
-        owner: string
+        owner: 'y' | 'i'
     }>
     isActive: boolean
 }
@@ -20,6 +20,8 @@ type TInitialState = {
     PersonsData: Array<PersonDataType>
     Threads: Array<ThreadType>
 }
+
+type TActions = SetThreadActionType | AddMessageActionType
 
 const initialState: TInitialState = {
         PersonsData: [
@@ -41,7 +43,7 @@ const initialState: TInitialState = {
                     {message: "void ones are looking", id: 3, owner: "y"},
                     {message: "E", id: 4, owner: "y"}
                 ],
-                isActive: true},
+                isActive: false},
             {id: 2, messages: [
                     {message: "yep", id: 1, owner: "y"},
                     {message: "qqq", id: 2, owner: "y"},
@@ -83,7 +85,7 @@ const initialState: TInitialState = {
         ]
     }
 
-const chatReducer = (state=initialState, action: any): TInitialState => {
+const chatReducer = (state=initialState, action: TActions): TInitialState => {
     switch (action.type) {
         case SetThread:
         {
@@ -103,7 +105,7 @@ const chatReducer = (state=initialState, action: any): TInitialState => {
                 ...state,
                 Threads: state.Threads.map(t => {
                     if (t.id === action.id) {
-                        t.messages = [...t.messages, action.message]
+                        t.messages = [...t.messages, {message: action.message, id: 5, owner: 'i'}]
                     }
                     return t
                 })

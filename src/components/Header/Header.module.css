@@ -1,6 +1,6 @@
 .header {
     grid-area: header;
-    background-color: #0f0f0f;
+    background-color: #202020;
 }
 .headerElements {
     display: grid;
@@ -45,11 +45,20 @@
     }
 }
 .appLogo2 {
+    display: table;
+    margin: 0 auto;
     border: 0 solid white;
     width: 270px;
     height: 59px;
-    position: relative;
-    left: 185px;
+/*    position: relative;*/
+/*    left: 15vw;*/
     object-fit: cover;
     object-position: 0 -23px;
+}
+
+@media all and (max-width: 600px) {
+    .appLogo2 {
+        visibility: hidden;
+        width: 0;
+    }
 }

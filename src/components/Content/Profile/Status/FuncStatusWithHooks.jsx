@@ -6,7 +6,7 @@ const StatusWithHooks = (props) => {
     let [EditMode, setEditMode] = useState(false)
     let [Status, setStatus] = useState(props.status)
     const enableEditMode = () => {
-        setEditMode(true)
+        if (props.isAuthedOwner) setEditMode(true)
     }
     const disableEditMode = () => {
         setEditMode(false)

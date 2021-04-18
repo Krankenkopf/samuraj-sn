@@ -31,7 +31,7 @@ const Chat = (props: TProps) => {
             </div>
             <div className={classes.chatArea}>
                 <div>
-                    <Thread Messages={thread ? thread.messages : ''} />
+                    <Thread Messages={thread ? thread.messages : null} />
                 </div>
                 {/* @ts-ignore */}
                 <ReduxMessageForm onSubmit={onSubmit}/>

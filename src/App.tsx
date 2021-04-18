@@ -13,7 +13,7 @@ import ChatContainer from "./components/Content/Chat/ChatContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import LoginContainer from "./components/Login/Login";
 import {connect} from "react-redux";
-import {initializeApp} from "./redux/AppReducer";
+import {initializeApp, TInitThunk} from "./redux/AppReducer";
 import {compose} from "redux";
 import Preloader from "./components/Preloader";
 import {TState} from "./redux/store";
@@ -23,7 +23,7 @@ type TMappedState = {
 }
 
 type TDispatchProps = {
-  initializeApp: () => (dispatch:any) => Promise<void>
+  initializeApp: () => TInitThunk
 }
 
 class App extends React.Component<TMappedState & TDispatchProps> {

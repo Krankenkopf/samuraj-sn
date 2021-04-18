@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {TFormData} from "../components/Login/Login";
 
 const instance = axios.create(
     {
@@ -12,7 +13,7 @@ const instance = axios.create(
 )
 
 export const UsersAPI = {
-    getUsers(PageSize, CurrentPage) {
+    getUsers(PageSize: number, CurrentPage: number) {
         return (
             instance.get(`users?count=${PageSize}&page=${CurrentPage}`).then(response => {
                 return {
@@ -23,21 +24,31 @@ export const UsersAPI = {
         )
     },
 
-
-    ahrlistize(id) {
+    ahrlistize(id: number) {
         return (
             instance.post(`follow/${id}`).then(response => response.data.resultCode)
             )
     },
-    disahrlistize(id) {
+    disahrlistize(id: number) {
         return (
             instance.delete(`follow/${id}`).then(response => response.data.resultCode)
         )
     }
 }
 
+export enum ResultCodes {
+    SUCCESS = 0,
+    ERROR = 1
+}
+
+type TAuthMeResponse = {
+    data: { id: number, email: string, login: string }
+    resultCode: number
+    messages: Array<string>
+}
+
 export const AuthAPI = {
-    login(email, password, rememberMe=false) {
+    login({email, password, rememberMe=false}: TFormData) {
         return (
             instance.post(`auth/login`, {email, password, rememberMe})
         )
@@ -51,7 +62,7 @@ export const AuthAPI = {
 
     authMe() {
         return (
-            instance.get(`auth/me`).then(response => {
+            instance.get<TAuthMeResponse>(`auth/me`).then(response => {
                 return {resultCode: response.data.resultCode, ...response.data.data, }
             })
         )
@@ -59,19 +70,29 @@ export const AuthAPI = {
 }
 
 export const ProfileAPI = {
-    getCurrentProfile(userId) {
+    getCurrentProfile(userId: number) {
         return (
             instance.get(`profile/${userId}`).then(response => response.data)
         )
     },
-    getCurrentProfileStatus(userId) {
+    getCurrentProfileStatus(userId: number) {
         return (
             instance.get(`profile/status/${userId}`).then(response => response.data)
         )
     },
-    sendToUpdateStatus(status) {
+    sendToUpdateStatus(status: string) {
         return (
             instance.put(`profile/status`, {status}).then(response => response.data.resultCode)
+        )
+    },
+    sendToUpdateProfileData(formData: any) {
+        return (
+            instance.put(`profile`, formData).then(response => response.data)
+        )
+    },
+    sendToUpdateProfilePhoto(photo: any) {
+        return (
+            instance.put(`profile/photo`, photo).then(response => response.data)
         )
     }
 }

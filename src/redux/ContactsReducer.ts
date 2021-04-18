@@ -1,6 +1,9 @@
 import imgdefault from "../assets/default-avatar.png"
 // @ts-ignore
 import {UsersAPI} from "../api/api";
+import {Dispatch} from "react";
+import {TState} from "./store";
+import { ThunkAction } from "redux-thunk";
 
 const TOGGLE = 'TOGGLE';
 const GET_USERS = 'GET_USERS';
@@ -8,6 +11,12 @@ const REPROCCING_USERS = 'REPROCCING_USERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const IS_FETCHING_SWITCH = 'IS_FETCHING_SWITCH';
 const TOGGLE_FOLLOWING_IN_PROGRESS = 'TOGGLE_FOLLOWING_IN_PROGRESS'
+
+type TIncomingData = {
+    items: Array<IncomingDataUserType>
+    totalCount: number
+    error: string | null
+}
 
 export type IncomingDataUserType = {
     id: number
@@ -33,6 +42,10 @@ export type InternalDataUserType = {
 
 type TInitialState = typeof initialState
 
+type TActions = ToggleIsAhrActionType | GetUsersActionType
+    | ReproccingUsersActionType | SetCurrentPageActionType
+    | IsFetchingSwitchActionType | ToggleFollowingInProgressActionType
+
 const initialState = {
     Users: [] as Array<InternalDataUserType>,
     PageCount: 0,
@@ -52,7 +65,7 @@ const initialState = {
     FibArray: [] as Array<number>
 }
 initialState.fib()
-const contactsReducer = (state = initialState, action: any): TInitialState => {
+const contactsReducer = (state = initialState, action: TActions): TInitialState => {
     switch (action.type) {
         case TOGGLE: {
             return {
@@ -161,10 +174,10 @@ export const getUsers = (contacts: Array<InternalDataUserType>): GetUsersActionT
 
 type ReproccingUsersActionType = {
     type: typeof REPROCCING_USERS
-    data: Array<IncomingDataUserType>
+    data: TIncomingData
 }
 
-export const reproccingUsers = (data: Array<IncomingDataUserType>): ReproccingUsersActionType => {
+export const reproccingUsers = (data: TIncomingData): ReproccingUsersActionType => {
     return {type: REPROCCING_USERS, data: data};
 }
 
@@ -195,17 +208,21 @@ export const toggleFollowingInProgress = (id: number): ToggleFollowingInProgress
     return {type: TOGGLE_FOLLOWING_IN_PROGRESS, id: id}
 }
 
-const toggleAhrlistize = async (dispatch: Function, id: number, toggleRequesting: Function) => {
+const toggleAhrlistize =
+    async (dispatch: Dispatch<ToggleIsAhrActionType | ToggleFollowingInProgressActionType>,
+           id: number, toggleRequesting: (id: number) => Promise<number> ) => {
         if (await toggleRequesting(id) === 0) {
             dispatch(toggleIsAhr(id))
             dispatch(toggleFollowingInProgress(id))
         }
 }
 
+type TDispatch = Dispatch<TActions>
+
 /*thunki*/
 
 export const toggle = (id: number, isAhrlist: boolean) => {
-    return (dispatch: Function) => {
+    return (dispatch: TDispatch, getState: TState) => {
         dispatch(toggleFollowingInProgress(id))
         isAhrlist
             ? toggleAhrlistize(dispatch, id, UsersAPI.disahrlistize)
@@ -213,8 +230,10 @@ export const toggle = (id: number, isAhrlist: boolean) => {
     }
 }
 
-export const setUsers = (PageSize: number, CurrentPage: number) => {
-    return async (dispatch: Function) => {
+type TThunk = ThunkAction<Promise<void>, TState, any, TActions>
+
+export const setUsers = (PageSize: number, CurrentPage: number): TThunk => {
+    return async (dispatch) => {
         dispatch(isFetchingSwitch(null))
         const response = await UsersAPI.getUsers(PageSize, CurrentPage)
             dispatch(reproccingUsers(response.data))

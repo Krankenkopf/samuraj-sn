@@ -1,12 +1,19 @@
 @media (prefers-reduced-motion: no-preference) {
     .preLoader {
         cursor: pointer;
-        width: 350px;
-        background: #0f0f0f;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         border-radius: 150px;
-        position: absolute;
-        margin-top: 10%;
-        margin-left: 20%;
+        position: fixed;
+
+
+    }
+    .preLoader img {
+        margin: 0 auto;
+        display: table;
+        padding: 2px;
+        width: 350px;
         animation: appLogoSpin infinite 1500ms running;
     }
     @keyframes appLogoSpin {
