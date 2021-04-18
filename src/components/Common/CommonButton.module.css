@@ -1,0 +1,77 @@
+
+.button {
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 14px;
+    letter-spacing: 2px;
+    position: relative;
+    background-color: #000;
+    border: none;
+    color: #fff;
+    padding: 0.7em 1em 0.7em;
+    margin: 0 1rem 1rem 0;
+    min-width: 10em;
+    min-height: 40px;
+    transition-duration: 0.4s;
+    overflow: hidden;
+    box-shadow: 0 5px 15px #193047;
+    border-radius: 40px;
+}
+
+.button:hover {
+    background: #0f0f0f;
+    box-shadow: 0 0 10px 10px yellow;
+    color: #fff;
+}
+
+.button:after {
+    content: "";
+    background: yellow;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px !important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.4s
+}
+
+.button:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 0.9;
+    transition: 0s
+}
+
+.button:focus { outline:0; }
+
+
+.red {
+    background: red;
+}
+
+.red:hover {
+    background: #0f0f0f;
+    box-shadow: 0 0 10px 10px red;
+    color: #fff;
+}
+
+.red:after {
+    content: "";
+    background: red;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px !important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.4s
+}
+.button:disabled {
+    cursor: not-allowed;
+    background: gray;
+    box-shadow: none;
+}
