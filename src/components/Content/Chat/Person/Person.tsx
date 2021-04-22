@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {FC} from 'react';
 import classes from './../Chat.module.css';
 import {NavLink} from "react-router-dom";
+import {TPersonData} from "../../../../redux/ChatReducer";
 
-const Person = (props) => {
+type TPersonProps = TPersonData & {
+    setThread: (id: number) => void
+}
+
+const Person: FC<TPersonProps> = (props) => {
     let setThread = () => {
         props.setThread(props.id);
     }

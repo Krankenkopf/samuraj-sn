@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import classes from './Profile.module.css'
-import StatusWithHooks from "./Status/FuncStatusWithHooks";
+import Status from "./Status/Status";
 import cfg from './../../../assets/settings-icon-transparent.png'
-import ProfileForm from "./Forms/ProfileForm";
-import avaBtnAdd from "../../../assets/add-icon-transparent.png"
-import avaBtnRefresh from "../../../assets/refresh-icon-transparent.png"
-import cn from "classnames";
-import ProfilePhotoForm from "./Forms/ProfilePhotoForm";
+import EditMode from "./EditMode";
+import AddPhotoMode from "./AddPhotoMode";
+import Avatar from "./Avatar/Avatar";
 
 const Profile = (props) => {
     const [editMode, toggleEditMode] = useState(false)
@@ -20,49 +18,36 @@ const Profile = (props) => {
             }
         }, 0);
     }
-
     let onSubmitProfileForm = (formData) => {
         props.sendToUpdateProfileData(formData)
     }
     let onSubmitProfilePhotoForm = (formData) => {
-        console.log(formData)
-/*        props.sendToUpdateProfilePhoto(formData)*/
+        props.sendToUpdateProfilePhoto(formData)
     }
+    useEffect(() => {
+        toggleAddPhotoMode(false)}, [props.CurrentProfilePhotos.photos])
 
     useEffect(() => {
-        toggleEditMode(false)
-    }, [props.CurrentProfile])
+        toggleEditMode(false)}, [props.CurrentProfile])
 
-    const avaBtn = avaBtnAdd
-    const avaTitle = 'Add your photo'
-    let avaBoxClassName = cn(classes.avaBox, {[classes.avaBoxHidden]: !isAvaBtnVisible})
+
 
     return (
         <>
             <div className={classes.profile}>
-                {editMode &&
-                <div className={classes.formBox} tabIndex={0} onBlur={(e) => handleBlur(e, toggleEditMode)}>
-                    <div><h3>Information</h3></div>
-                    <ProfileForm onSubmit={onSubmitProfileForm}
-                                 initialValues={props.CurrentProfile}/>
-                </div>}
-                {addPhotoMode &&
-                <div className={classes.formBox} tabIndex={0} onBlur={(e) => handleBlur(e, toggleAddPhotoMode)}>
-                    <ProfilePhotoForm onSubmit={onSubmitProfilePhotoForm}
-                                      /*initialValues={props.CurrentProfilePhotos}*//>
-                </div>}
-                <div className={classes.avaContent}
-                     onMouseOver={() => toggleVisibility(true)}
-                     onMouseOut={() => toggleVisibility(false)}>
-                    <img src={props.CurrentProfilePhotos.photos.large} alt={'ava'}/>
-                    {props.isAuthedOwner && <div className={avaBoxClassName}>
-                        <div>{avaTitle}</div>
-                        <input type={'image'}
-                               src={avaBtn}
-                               onClick={() => toggleAddPhotoMode(true)}
-                               alt={'avaButton'}/>
-                    </div>}
-                </div>
+                {editMode && <EditMode handleBlur={handleBlur}
+                                       toggleEditMode={toggleEditMode}
+                                       onSubmitProfileForm={onSubmitProfileForm}
+                                       initialValues={props.CurrentProfile}/>}
+                {addPhotoMode && <AddPhotoMode handleBlur={handleBlur}
+                                               toggleAddPhotoMode={toggleAddPhotoMode}
+                                               onSubmitProfilePhotoForm={onSubmitProfilePhotoForm}/>}
+                <Avatar avatar={props.CurrentProfilePhotos.photos.large}
+                        isAvaBtnVisible={isAvaBtnVisible}
+                        toggleVisibility={toggleVisibility}
+                        hasPhoto={props.hasPhoto}
+                        isAuthedOwner={props.isAuthedOwner}
+                        toggleAddPhotoMode={toggleAddPhotoMode}/>
 
                 {props.isAuthedOwner && <input type={'image'}
                                                className={classes.cfgBtn}
@@ -72,18 +57,18 @@ const Profile = (props) => {
                                                alt={'cfg'}/>}
                 <div className={classes.data}>
                     <div>
-                        <h2>{props.CurrentProfile.fullName}</h2>
+                        <h2 className={classes.profileTitle}>{props.CurrentProfile.fullName}</h2>
                     </div>
-                    <div className={classes.status}>
-                        <StatusWithHooks status={props.CurrentStatus}
-                                         isAuthedOwner={props.isAuthedOwner}
-                                         updateStatus={props.sendToUpdateStatus}/>
+
+                    <Status status={props.CurrentStatus}
+                            isAuthedOwner={props.isAuthedOwner}
+                            updateStatus={props.sendToUpdateStatus}/>
+
+                    <div>
+                        <b>Looking for a job:</b>{props.CurrentProfile.lookingForAJob ? ' yep' : ' negative'}
                     </div>
                     <div>
-                        <b>Looking for a job:</b>{props.CurrentProfile.lookingForAJob}
-                    </div>
-                    <div>
-                        <b>Description:</b>{props.CurrentProfile.lookingForAJobDescription}
+                        <b>Description:</b> {props.CurrentProfile.lookingForAJobDescription}
                     </div>
                     <div>
                         Contacts
@@ -103,7 +88,7 @@ const Profile = (props) => {
 
 const Contact = ({title, contact}) => {
     return (
-        <div><b>{title}:</b> {contact}</div>
+        <div><b>{title}:</b> <a className={classes.contactLink} href={'https://'+contact}> {contact}</a> </div>
     )
 }
 

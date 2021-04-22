@@ -1,56 +1,45 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import classes from "../Profile.module.css"
 
 
-class Status extends React.Component {
-    state = {
-        Status: this.props.status,
-        EditMode: false,
-        Di4: "Eto kaka9-to di4"
+const StatusWithHooks = (props) => {
+    let [EditMode, setEditMode] = useState(false)
+    let [Status, setStatus] = useState(props.status)
+    const enableEditMode = () => {
+        if (props.isAuthedOwner) setEditMode(true)
     }
-
-    enableEditMode = () => {
-        this.setState({EditMode: true})
-    }
-
-    disableEditMode = () => {
-        if (this.state.Status !== this.props.status) {
-            this.props.updateStatus(this.state.Status)
-        }
-        this.setState({EditMode: false})
-    }
-
-    updateLocalStatus = (e) => {
-        this.setState({Status: e.target.value})
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.status !== this.props.status)
-        {
-            this.setState({Status: this.props.status})
+    const disableEditMode = () => {
+        setEditMode(false)
+        if (props.status !== Status) {
+            props.updateStatus(Status)
         }
     }
+    const updateStatus = (e) => {
+        setStatus(e.currentTarget.value)
+    }
 
-    render() {
+    useEffect(() => {
+        setStatus(props.status)
+    }, [props.status])
+
         return (
-            <>
-                {!this.state.EditMode &&
+            <div className={classes.status}>
+                {!EditMode &&
                 <div>
-                    <span className={classes.status} onDoubleClick={this.enableEditMode}>
-                        {this.props.status}
+                    <span className={classes.status} onDoubleClick={enableEditMode}>
+                        {props.status}
                     </span>
                 </div>}
-                {this.state.EditMode &&
+                {EditMode &&
                 <div>
                     <input
                         autoFocus={true}
-                        onBlur={this.disableEditMode}
-                        onChange={this.updateLocalStatus}
-                        value={this.state.Status}/>
+                        onBlur={disableEditMode}
+                        onChange={updateStatus}
+                        value={Status}/>
                 </div>}
-            </>
+            </div>
         )
-    }
 }
 
-export default Status
+export default StatusWithHooks

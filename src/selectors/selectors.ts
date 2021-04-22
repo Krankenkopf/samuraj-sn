@@ -5,6 +5,7 @@ import {InternalDataUserType} from "../redux/ContactsReducer";
 export const selectCurrentProfile = (state: TState) => (state.Profile.CurrentProfile)
 export const selectCurrentProfilePhotos = (state: TState) => (state.Profile.CurrentProfilePhotos)
 export const selectCurrentStatus = (state: TState) => (state.Profile.CurrentProfileStatus)
+export const selectHasPhoto = (state: TState) => (state.Profile.hasPhoto)
 export const selectIsAuth = (state: TState) => (state.Auth.isAuth)
 export const selectLogin = (state: TState) => (state.Auth.login)
 export const selectMyId = (state: TState) => (state.Auth.id)

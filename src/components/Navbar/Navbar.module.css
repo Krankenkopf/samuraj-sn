@@ -1,4 +1,7 @@
+/*@import url("../../assets/fonts/telegraphem/stylesheet.css");*/
+
 .navigation {
+    font-family: telegraphemregular, sans-serif;
     grid-area: nav;
     color: #ffffff;
     background-color: #202020;

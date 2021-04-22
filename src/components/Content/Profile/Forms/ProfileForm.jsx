@@ -1,6 +1,6 @@
 import React from "react";
 import {Field, reduxForm} from "redux-form";
-import {Checkbox, Input, Textarea} from "../../../Common/FormsControls/FormsControls";
+import {Checkbox, simpleInputFieldCreator, Textarea} from "../../../Common/FormsControls/FormsControls";
 import {requiredField} from "../../../../utilities/Validators";
 
 const ProfileForm = (props) => {
@@ -8,10 +8,7 @@ const ProfileForm = (props) => {
         <form onSubmit={props.handleSubmit}>
             <div>
                 <label> Your name </label>
-                <Field placeholder={'Full Name'}
-                       name={'fullName'}
-                       component={Input}
-                       validate={[requiredField]}/>
+                {simpleInputFieldCreator('fullName', [requiredField], 'Full Name')}
             </div>
             <div>
                 <label>Describe yourself</label>
@@ -29,44 +26,28 @@ const ProfileForm = (props) => {
             </div>
             <h4>Contacts</h4>
             <div>
-                <Field placeholder={'GitHub'}
-                       name={'contacts.github'}
-                       component={Input}/>
+                {simpleInputFieldCreator('contacts.github', null, 'GitHub')}
             </div>
             <div>
-                <Field placeholder={'Vk'}
-                       name={'contacts.vk'}
-                       component={Input}/>
+                {simpleInputFieldCreator('contacts.vk', null, 'Vk')}
             </div>
             <div>
-                <Field placeholder={'Facebook'}
-                       name={'contacts.facebook'}
-                       component={Input}/>
+                {simpleInputFieldCreator('contacts.facebook', null, 'Facebook')}
             </div>
             <div>
-                <Field placeholder={'Instagram'}
-                       name={'contacts.instagram'}
-                       component={Input}/>
+                {simpleInputFieldCreator('contacts.instagram', null, 'Instagram')}
             </div>
             <div>
-                <Field placeholder={'Twitter'}
-                       name={'contacts.twitter'}
-                       component={Input}/>
+                {simpleInputFieldCreator('contacts.twitter', null, 'Twitter')}
             </div>
             <div>
-                <Field placeholder={'Youtube'}
-                       name={'contacts.youtube'}
-                       component={Input}/>
+                {simpleInputFieldCreator('contacts.youtube', null, 'Youtube')}
             </div>
             <div>
-                <Field placeholder={'mainLink'}
-                       name={'contacts.mainLink'}
-                       component={Input}/>
+                {simpleInputFieldCreator('contacts.mainLink', null, 'mainLink')}
             </div>
             <div>
-                <Field placeholder={'Your website'}
-                       name={'contacts.website'}
-                       component={Input}/>
+                {simpleInputFieldCreator('contacts.website', null, 'Your website')}
             </div>
             <button type={'submit'} autoFocus={true}> Submit </button>
         </form>

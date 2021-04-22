@@ -1,24 +1,26 @@
 const SetThread = 'SET-THREAD';
 const AddMessage = 'ADD-MESSAGE';
 
-export type PersonDataType = {
+export type TPersonData = {
     person: string
     id: number
 }
 
-export type ThreadType = {
+export type TThread = {
     id: number
-    messages: Array<{
-        message: string
-        id: number
-        owner: 'y' | 'i'
-    }>
+    messages: Array<TChatMessage>
     isActive: boolean
 }
 
+export type TChatMessage = {
+    message: string
+    id: number
+    owner: 'y' | 'i'
+}
+
 type TInitialState = {
-    PersonsData: Array<PersonDataType>
-    Threads: Array<ThreadType>
+    PersonsData: Array<TPersonData>
+    Threads: Array<TThread>
 }
 
 type TActions = SetThreadActionType | AddMessageActionType

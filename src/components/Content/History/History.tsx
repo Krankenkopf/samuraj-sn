@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {FC} from 'react';
 import classes from './History.module.css';
 
-const History = () => {
+const History: FC = () => {
     return (
         <div className={classes.history}>
             History

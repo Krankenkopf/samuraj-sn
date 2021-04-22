@@ -1,3 +1,5 @@
+@import url("../../../assets/fonts/telegraphem/stylesheet.css");
+
 .profile {
     padding: 10px;
     display: grid;
@@ -5,6 +7,14 @@
     grid-template-columns: calc(100px + 10vw) 1fr;
     grid-template-areas: 'ava data'
     'content content';
+}
+
+.profileTitle {
+    font-family: telegraphemregular, sans-serif;
+    font-variant: all-small-caps;
+    letter-spacing: 0.5vw;
+    margin: 10px 0 10px !important;
+    font-size: calc(10px + 4vw);
 }
 
 .data {
@@ -102,6 +112,12 @@
     box-shadow: 0 0 5px 5px #000;
 }
 
+.contactLink {
+    text-decoration: none;
+    color: orange;
+}
+
+/*
 .preview {
     width: calc(100px + 10vw);
-}
+}*/

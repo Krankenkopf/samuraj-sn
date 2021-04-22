@@ -14,7 +14,7 @@ import {
     selectCurrentProfile,
     selectIsAuth,
     selectCurrentStatus,
-    selectCurrentProfilePhotos
+    selectCurrentProfilePhotos, selectHasPhoto
 } from "../../../selectors/selectors";
 import PreLoader from "../../Preloader";
 
@@ -60,6 +60,7 @@ let mapStateToProps = (state) => {
         CurrentProfile: selectCurrentProfile(state),
         CurrentProfilePhotos: selectCurrentProfilePhotos(state),
         CurrentStatus: selectCurrentStatus(state),
+        hasPhoto: selectHasPhoto(state),
         isAuth: selectIsAuth(state),
         myId: selectMyId(state)
     }

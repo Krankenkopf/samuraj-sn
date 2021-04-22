@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {FC} from 'react';
 import classes from './Chat.module.css';
-import {Field, reduxForm} from "redux-form";
+import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import {TMessageFormData} from "./Chat";
 
 
+type TMessageForm = InjectedFormProps<TMessageFormData>
 
-
-const MessageForm = (props) => {
+const MessageForm: FC<TMessageForm> = (props) => {
     return (
                 <div className={classes.inputArea}>
                     <form onSubmit={props.handleSubmit}>
@@ -24,6 +25,5 @@ const MessageForm = (props) => {
     )
 }
 
-const ReduxMessageForm = reduxForm({form: 'messageForm'})(MessageForm)
 
-export default ReduxMessageForm;
+export default reduxForm<TMessageFormData, {}, string>({form: 'messageForm'})(MessageForm)

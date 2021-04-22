@@ -10,11 +10,10 @@ class ProfilePhotoForm extends Component {
     state = { imageFile: [] };
 
     handleFormSubmit = formProps => {
-        const fd = new FormData();
-        fd.append("imageFile", formProps.imageToUpload.file);
+
         // append any additional Redux form fields
         // create an AJAX request here with the created formData
-
+        this.props.onSubmit(formProps.imageToUpload.file)
         alert(JSON.stringify(formProps, null, 4));
     };
 
@@ -65,7 +64,7 @@ class ProfilePhotoForm extends Component {
             </Form>
             <div className={classes.clear} />
         </div>
-    );
+    )
 }
 
-export default reduxForm({form: 'profilePhotoForm'})(ProfilePhotoForm)
+export default reduxForm({form: 'profilePhotoForm'})(ProfilePhotoForm);

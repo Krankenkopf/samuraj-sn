@@ -1,16 +1,16 @@
 @media (prefers-reduced-motion: no-preference) {
     .preLoader {
         cursor: pointer;
-        display: flex;
+/*        display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: center;*/
         border-radius: 150px;
-        position: fixed;
+/*        position: fixed;*/
 
 
     }
     .preLoader img {
-        margin: 0 auto;
+        margin: 10vw auto;
         display: table;
         padding: 2px;
         width: 350px;

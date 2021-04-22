@@ -1,5 +1,4 @@
 import imgdefault from "../assets/default-avatar.png"
-// @ts-ignore
 import {UsersAPI} from "../api/api";
 import {Dispatch} from "react";
 import {TState} from "./store";
@@ -222,7 +221,7 @@ type TDispatch = Dispatch<TActions>
 /*thunki*/
 
 export const toggle = (id: number, isAhrlist: boolean) => {
-    return (dispatch: TDispatch, getState: TState) => {
+    return (dispatch: TDispatch) => {
         dispatch(toggleFollowingInProgress(id))
         isAhrlist
             ? toggleAhrlistize(dispatch, id, UsersAPI.disahrlistize)

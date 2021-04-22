@@ -4,10 +4,10 @@ type TInitialState = typeof initialState
 
 let initialState = {
         Texts: [
-            {text: "post 1"},
-            {text: "post 2"},
-            {text: "post 3"},
-            {text: "post 4"}
+            {id: 1, text: "post 1"},
+            {id: 2, text: "post 2"},
+            {id: 3, text: "post 3"},
+            {id: 4, text: "post 4"}
         ]
 }
 
@@ -15,6 +15,7 @@ const mainPageReducer = (state=initialState, action: AddPostActionType): TInitia
     switch (action.type) {
         case ADD_POST: {
             let newPost = {
+                id: 5,
                 text: action.post
             }
             return {

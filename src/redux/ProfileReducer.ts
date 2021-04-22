@@ -44,15 +44,15 @@ type TActions = SetCurrentProfileActionType | SetCurrentProfileStatusActionType
 let initialState = {
     CurrentProfile: null as TProfileData | null,
     CurrentProfilePhotos: null as TProfilePhotos | null,
-    CurrentProfileStatus: '---'
+    CurrentProfileStatus: '---',
+    hasPhoto: false
 }
 
 const profileReducer = (state = initialState, action: TActions): TInitialState => {
     switch (action.type) {
         case SET_CURRENT_PROFILE: {
-            if (action.data.photos.large === null) {
-                action.data.photos.large = imgdefault
-            }
+            let hasPhoto = false
+            action.data.photos.large ? hasPhoto = true : action.data.photos.large = imgdefault
             return {
                 ...state,
                 CurrentProfile: {
@@ -65,7 +65,8 @@ const profileReducer = (state = initialState, action: TActions): TInitialState =
                 },
                 CurrentProfilePhotos: {
                     photos: { ...action.data.photos}
-                }
+                },
+                hasPhoto: hasPhoto
             }
         }
         case SET_STATUS:
@@ -78,7 +79,7 @@ const profileReducer = (state = initialState, action: TActions): TInitialState =
             return {
                 ...state,
                 CurrentProfilePhotos: {
-                    photos: { ...action.data}
+                    photos: { ...action.data.photos}
                 }
             }
         case CLEAR_CURRENT_PROFILE:
@@ -86,7 +87,8 @@ const profileReducer = (state = initialState, action: TActions): TInitialState =
                 ...state,
                 CurrentProfile: null,
                 CurrentProfilePhotos: null,
-                CurrentProfileStatus: ''
+                CurrentProfileStatus: '',
+                hasPhoto: false
             }
         default:
             return state
@@ -175,11 +177,10 @@ export const sendToUpdateProfileData = (formData: any): TThunk => {
     }
 }
 
-export const sendToUpdateProfilePhoto = (photo: any): TThunk => {
+export const sendToUpdateProfilePhoto = (photoFile: any): TThunk => {
     return async (dispatch) => {
-        const response = await ProfileAPI.sendToUpdateProfilePhoto(photo)
+        const response = await ProfileAPI.sendToUpdateProfilePhoto(photoFile)
         if (response.resultCode === ResultCodes.SUCCESS)
-            debugger
             await dispatch(updateProfilePhoto(response.data))
     }
 }

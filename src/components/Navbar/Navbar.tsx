@@ -18,7 +18,7 @@ const Navbar = () => {
                     className={classes.link}
                     to="/activities"
                     activeClassName={classes.active}>
-                    Krank Activities
+                    Activities
                 </NavLink>
             </div>
             <div>

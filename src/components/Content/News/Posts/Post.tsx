@@ -1,20 +1,22 @@
-import classes from "./newsDefault.module.css";
-import React from "react";
+import classes from "./Post.module.css";
+import React, {FC} from "react";
 import image01 from "../../../../assets/mistress madness.jpg";
 
-const Post = (props) => {
+type TPostProps = {
+    text: string
+}
+
+const Post: FC<TPostProps> = ({text}) => {
     return (
         <div className={classes.post}>
             <div>
                 {<img src={image01} alt={'postImg'}/>}
             </div>
             <div>
-                {props.text}
+                {text}
             </div>
         </div>
     )
 }
 
-
-
-    export default Post;
+export default Post

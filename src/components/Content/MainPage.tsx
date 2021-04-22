@@ -1,10 +1,10 @@
 import logo2 from '../../assets/krankenkopf(transparent).png';
-import yticon from '../../yt.png';
+import yticon from '../../assets/yt.png';
 import classes from './MainPage.module.css';
-import React from "react";
+import React, {FC} from "react";
 import NewsContainer from "./News/NewsContainer";
 
-const MainPage = () => {
+const MainPage: FC = () => {
     return (
         <div className={classes.mainPage}>
             <div>

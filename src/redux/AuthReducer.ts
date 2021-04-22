@@ -66,7 +66,7 @@ export const auth = ({resultCode, email, id, login}: AuthDataType): AuthActionTy
     return {type: 'AUTH', data: {email, id, login}, resultCode: resultCode}
 }
 
-export type TAuthThunk = ThunkAction<Promise<void>, TState, any, TActions>
+export type TAuthThunk = ThunkAction<Promise<void>, TState, null, TActions>
 
 export const authMe = (): TAuthThunk => async (dispatch) => {
     const authData: AuthDataType = await AuthAPI.authMe()

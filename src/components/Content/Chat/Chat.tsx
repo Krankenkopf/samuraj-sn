@@ -1,27 +1,28 @@
-import React from 'react';
+import React, {FC} from 'react';
 import classes from './Chat.module.css';
 import Thread from "./Thread/Thread";
 import Person from "./Person/Person";
-import ReduxMessageForm from "./MessageForm";
-import {AddMessageActionType, PersonDataType, SetThreadActionType, ThreadType} from "../../../redux/ChatReducer";
+import MessageForm from "./MessageForm";
+import {AddMessageActionType, TPersonData, SetThreadActionType, TThread} from "../../../redux/ChatReducer";
 
-type TProps = {
-    PersonalData:  Array<PersonDataType>
-    Threads: Array<ThreadType>
-    isAuth: boolean
+type TChatProps = {
+    PersonData:  Array<TPersonData>
+    Threads: Array<TThread>
     setThread: (id: number) => SetThreadActionType
     addMessage: (message: string, id: number) => AddMessageActionType
-
 }
 
-const Chat = (props: TProps) => {
-    let PersonElement = props.PersonalData.map(name => (
-        <Person person={name.person} id={name.id} setThread={props.setThread}/>));
-    let thread: ThreadType | undefined = props.Threads.find(t => t.isActive)
-    let onSubmit = (message: string, threadId: number | undefined) => {
-        if (threadId) props.addMessage(message, threadId)
-    }
+export type TMessageFormData = {
+    message: string
+}
 
+const Chat: FC<TChatProps> = ({PersonData, Threads, setThread, addMessage}) => {
+    const PersonElement = PersonData.map(name => (
+        <Person key={name.id} person={name.person} id={name.id} setThread={setThread}/>));
+    const thread: TThread | undefined = Threads.find(t => t.isActive)
+    const onSubmit = ({message}: TMessageFormData) => {
+        if (thread) addMessage(message, thread.id)
+    }
 
 
     return (
@@ -31,10 +32,9 @@ const Chat = (props: TProps) => {
             </div>
             <div className={classes.chatArea}>
                 <div>
-                    <Thread Messages={thread ? thread.messages : null} />
+                    {thread ? <Thread messages={thread.messages} /> : ''}
                 </div>
-                {/* @ts-ignore */}
-                <ReduxMessageForm onSubmit={onSubmit}/>
+                {thread ? <MessageForm onSubmit={onSubmit}/> : ''}
             </div>
         </div>
     )

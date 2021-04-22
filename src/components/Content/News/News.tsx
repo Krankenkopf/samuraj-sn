@@ -1,17 +1,24 @@
-import React from 'react';
+import React, {FC} from 'react';
 import classes from './News.module.css';
-import Post from './News1/newsDefault';
-import {Field, reduxForm} from "redux-form";
+import Post from './Posts/Post';
+import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {maxLengthCreator, requiredField} from "../../../utilities/Validators";
 import {Textarea} from "../../Common/FormsControls/FormsControls";
 
 
-const News = (props) => {
-    let posts = props.Texts.map((txt) => {
-        return (<Post text={txt.text}/>);
+export type TPostFormData = {post: string}
+
+type TNewsProps = {
+    texts: Array<{id: number, text: string}>
+    addPost: (post: string) => void
+}
+
+const News: FC<TNewsProps> = ({texts, addPost}) => {
+    let posts = texts.map((txt) => {
+        return (<Post key={txt.id} text={txt.text}/>);
     });
-    let onSubmit = (post) => {
-        props.addPost(post.newPost)
+    let onSubmit = ({post}: TPostFormData) => {
+        addPost(post)
     }
     return (
         <div>
@@ -25,13 +32,13 @@ const News = (props) => {
 
 let maxLength = maxLengthCreator(10)
 
-const PostForm = (props) => {
+const PostForm: FC<InjectedFormProps<TPostFormData>> = (props) => {
     return (
         <div className={classes.addPost}>
             <h3> News </h3>
             <form onSubmit={props.handleSubmit}>
                 <Field component={Textarea}
-                       name={'newPost'}
+                       name={'post'}
                        placeholder={'Schreib new post hier!'}
                        validate={[requiredField, maxLength]}
                        className={classes.area}/>
@@ -41,6 +48,6 @@ const PostForm = (props) => {
     )
 }
 
-const ReduxPostForm = reduxForm({form: 'postForm'})(PostForm)
+const ReduxPostForm = reduxForm<TPostFormData, {}, string>({form: 'postForm'})(PostForm)
 
 export default News;

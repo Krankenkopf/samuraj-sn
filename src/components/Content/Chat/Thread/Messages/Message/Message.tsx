@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {FC} from 'react';
 import classes from './../../Thread.module.css';
 
-const Message = (props) => {
+type TMessageProps = {
+    message: string
+}
+
+const Message: FC<TMessageProps> = ({message}) => {
     return (
         <div className={classes.yourMessage}>
-            {props.Message}
+            {message}
         </div>
     )
 }

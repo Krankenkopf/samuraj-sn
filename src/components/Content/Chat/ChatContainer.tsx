@@ -2,10 +2,10 @@ import Chat from "./Chat";
 import {
     addMessage,
     AddMessageActionType,
-    PersonDataType,
+    TPersonData,
     setThread,
     SetThreadActionType,
-    ThreadType
+    TThread
 } from "../../../redux/ChatReducer";
 import {connect} from "react-redux";
 import AuthHoc from "../../Hocs/AuthHoc";
@@ -14,8 +14,8 @@ import {selectThreads, selectPersonalData} from "../../../selectors/selectors";
 import {TState} from "../../../redux/store";
 
 type TMappedState = {
-    PersonalData:  Array<PersonDataType>
-    Threads: Array<ThreadType>
+    PersonData:  Array<TPersonData>
+    Threads: Array<TThread>
 }
 
 type TDispatchProps = {
@@ -25,7 +25,7 @@ type TDispatchProps = {
 
 let mapStateToProps = (state: TState): TMappedState => {
     return {
-        PersonalData: selectPersonalData(state),
+        PersonData: selectPersonalData(state),
         Threads: selectThreads(state),
     }
 
