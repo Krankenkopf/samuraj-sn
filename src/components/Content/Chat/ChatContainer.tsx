@@ -8,10 +8,11 @@ import {
     TThread
 } from "../../../redux/ChatReducer";
 import {connect} from "react-redux";
-import AuthHoc from "../../Hocs/AuthHoc";
+import {AuthHoc} from "../../Hocs/AuthHoc";
 import {compose} from "redux";
 import {selectThreads, selectPersonalData} from "../../../selectors/selectors";
 import {TState} from "../../../redux/store";
+import React from "react";
 
 type TMappedState = {
     PersonData:  Array<TPersonData>
@@ -31,19 +32,9 @@ let mapStateToProps = (state: TState): TMappedState => {
 
 }
 
-type TMappedAuthData = {
-    isAuth: boolean
-}
 
-let mapAuthDataToProps = (state: TState): TMappedAuthData => {
-    return {
-        isAuth: state.Auth.isAuth
-    }
-}
-
-export default compose(
+export default compose<React.ComponentType>(
     connect<TMappedState, TDispatchProps, {}, TState>(mapStateToProps, {setThread, addMessage}),
-    connect<TMappedAuthData, {}, {}, TState>(mapAuthDataToProps),
     AuthHoc
 )(Chat)
 

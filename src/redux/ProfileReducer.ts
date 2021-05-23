@@ -1,7 +1,6 @@
 import {ResultCodes} from "../api/api";
 import imgdefault from '../assets/default-avatar.png'
-import {ThunkAction} from "redux-thunk";
-import {TInferActions, TState, TThunk} from "./store";
+import {TInferActions, TThunk} from "./store";
 import {stopSubmit} from "redux-form";
 import {ProfileAPI} from "../api/profile-api";
 
@@ -13,28 +12,30 @@ const CLEAR_CURRENT_PROFILE = 'CLEAR_CURRENT_PROFILE'
 
 export type TIncomingDataProfile = TProfileData & TProfilePhotos
 
-type TProfileData = {
+export type TProfileContacts = {
+    github: string
+    vk: string
+    facebook: string
+    instagram: string
+    twitter: string
+    website: string
+    youtube: string
+    mainLink: string
+}
+
+export type TProfileData = {
     userId: number
     aboutMe: string
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
-    contacts: {
-        github: string
-        vk: string
-        facebook: string
-        instagram: string
-        twitter: string
-        website: string
-        youtube: string
-        mainLink: string
-    }
+    contacts: TProfileContacts
 }
 
 export type TProfilePhotos = {
     photos: {
-        small: string | null
-        large: string | null
+        small: string
+        large: string
     }
 }
 
@@ -43,8 +44,13 @@ type TActions = TInferActions<typeof actions>
 
 let initialState = {
     CurrentProfile: null as TProfileData | null,
-    CurrentProfilePhotos: null as TProfilePhotos | null,
-    CurrentProfileStatus: '---',
+    CurrentProfilePhotos: {
+        photos: {
+            small: imgdefault,
+            large: imgdefault
+        }
+    },
+    CurrentProfileStatus: '',
     hasPhoto: false
 }
 
@@ -52,7 +58,7 @@ const profileReducer = (state = initialState, action: TActions): TInitialState =
     switch (action.type) {
         case SET_CURRENT_PROFILE: {
             let hasPhoto = false
-            action.data.photos.large ? hasPhoto = true : action.data.photos.large = imgdefault
+            if (action.data.photos.large) hasPhoto = true
             return {
                 ...state,
                 CurrentProfile: {
@@ -85,10 +91,11 @@ const profileReducer = (state = initialState, action: TActions): TInitialState =
         case CLEAR_CURRENT_PROFILE:
             return {
                 ...state,
-                CurrentProfile: null,
-                CurrentProfilePhotos: null,
+                ...initialState
+                /*CurrentProfile: null,
+                CurrentProfilePhotos: ,
                 CurrentProfileStatus: '',
-                hasPhoto: false
+                hasPhoto: false*/
             }
         default:
             return state
@@ -105,7 +112,7 @@ export const actions = {
     updateStatus: (status: string) => {
         return {type: UPDATE_STATUS, status: status} as const},
 
-    updateProfilePhoto: (data: any) => {
+    updateProfilePhoto: (data: TProfilePhotos) => {
         return {type: UPDATE_PROFILE_PHOTO, data: data} as const},
 
     clearCurrentProfile: () => ({type: CLEAR_CURRENT_PROFILE} as const)
@@ -146,7 +153,7 @@ export const sendToUpdateProfileData = (formData: any): TThunk<TActions> => {
     }
 }
 
-export const sendToUpdateProfilePhoto = (photoFile: any): TThunk<TActions> => {
+export const sendToUpdateProfilePhoto = (photoFile: File): TThunk<TActions> => {
     return async (dispatch) => {
         const response = await ProfileAPI.sendToUpdateProfilePhoto(photoFile)
         if (response.resultCode === ResultCodes.SUCCESS)

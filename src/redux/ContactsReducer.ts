@@ -14,7 +14,7 @@ const TOGGLE_FOLLOWING_IN_PROGRESS = 'TOGGLE_FOLLOWING_IN_PROGRESS'
 
 
 
-export type IncomingDataUserType = {
+export type TIncomingDataUser = {
     id: number
     name: string,
     status: string | null,
@@ -25,13 +25,16 @@ export type IncomingDataUserType = {
     }
 }
 
-export type InternalDataUserType = {
+export type TInternalDataUser = {
     id: number
     firstName: string,
     pastName: string,
-    imgsrc: string | null,
+    imgsrc: string,
     isAhrlist: {value: boolean},
-    location: Object,
+    location: {
+        city: string
+        country: string
+    } | null
     position: string | null
 
 }
@@ -43,7 +46,7 @@ type TActions = ToggleIsAhrActionType | GetUsersActionType
     | IsFetchingSwitchActionType | ToggleFollowingInProgressActionType
 
 const initialState = {
-    Users: [] as Array<InternalDataUserType>,
+    Users: [] as Array<TInternalDataUser>,
     PageCount: 0,
     PageSize: 10,
     CurrentPage: 1,
@@ -86,7 +89,7 @@ const contactsReducer = (state = initialState, action: TActions): TInitialState 
         case REPROCCING_USERS: {
             return {
                 ...state,
-                Users: action.data.items.map((u: any): InternalDataUserType => {
+                Users: action.data.items.map((u: any): TInternalDataUser => {
                     if (u.photos.large === null) {
                         u.photos.large = imgdefault
                     }
@@ -99,7 +102,7 @@ const contactsReducer = (state = initialState, action: TActions): TInitialState 
                         pastName: '',
                         imgsrc: u.photos.large,
                         isAhrlist: {value: u.followed},
-                        location: {},
+                        location: null,
                         position: u.status
                     }
                 }),
@@ -161,10 +164,10 @@ export const toggleIsAhr = (id: number): ToggleIsAhrActionType => {
 
 type GetUsersActionType = {
     type: typeof GET_USERS
-    contacts: Array<InternalDataUserType>
+    contacts: Array<TInternalDataUser>
 }
 
-export const getUsers = (contacts: Array<InternalDataUserType>): GetUsersActionType => {
+export const getUsers = (contacts: Array<TInternalDataUser>): GetUsersActionType => {
     return {type: GET_USERS, contacts: contacts};
 }
 

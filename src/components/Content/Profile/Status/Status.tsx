@@ -1,8 +1,13 @@
-import React, {useEffect, useState} from 'react'
+import React, {ChangeEvent, FC, useEffect, useState} from 'react'
 import classes from "../Profile.module.css"
 
+type TStatusProps = {
+    status: string
+    isAuthedOwner?: boolean
+    updateStatus: (status: string) => void
+}
 
-const StatusWithHooks = (props) => {
+const Status: FC<TStatusProps> = (props) => {
     let [EditMode, setEditMode] = useState(false)
     let [Status, setStatus] = useState(props.status)
     const enableEditMode = () => {
@@ -14,7 +19,7 @@ const StatusWithHooks = (props) => {
             props.updateStatus(Status)
         }
     }
-    const updateStatus = (e) => {
+    const updateStatus = (e: ChangeEvent<HTMLInputElement>) => {
         setStatus(e.currentTarget.value)
     }
 
@@ -42,4 +47,4 @@ const StatusWithHooks = (props) => {
         )
 }
 
-export default StatusWithHooks
+export default Status

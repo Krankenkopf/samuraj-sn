@@ -1,22 +1,36 @@
-import React from 'react';
+import React, { FC } from 'react';
 import classes from "./Contacts.module.css";
 import Preloader from "../../Preloader";
 import User from "./Users/User";
 import cn from "classnames"
+import {TInternalDataUser} from "../../../redux/ContactsReducer";
 
+type TContactsProps = {
+    users: Array<TInternalDataUser>
+    pageCount: number
+    pageSize: number
+    currentPage: number
+    pagesSet: Array<number>
+    isFetching: boolean
+    userFollowingInProgress: Array<number>
 
-const Contacts = (props) => {
-    let pages = props.PagesSet.map(p => {
+    setCurrentPage: (page: number) => void
+    isFetchingSwitch: (status: number) => void
+    toggle: (id: number, isAhrlist: boolean) => void
+}
+
+const Contacts: FC<TContactsProps> = (props) => {
+    const pages = props.pagesSet.map(p => {
         return (
             <span
                 key={p}
-                className={cn( {[classes.activePage]: props.CurrentPage === p})}
+                className={cn( {[classes.activePage]: props.currentPage === p})}
                 onClick={() => {
-                    props.setUsers(props.PageSize, p)
+                    props.setCurrentPage(p)
                 }}> {p} </span>
         )
     })
-    let propsUsers = () => props.Users.map(u => {
+    const propsUsers = () => props.users.map(u => {
         return (<User
             key={u.id}
             id={u.id}
@@ -27,7 +41,7 @@ const Contacts = (props) => {
             isAhrlist={u.isAhrlist.value}
             location={u.location}
             toggle={props.toggle}
-            UserFollowingInProgress={props.UserFollowingInProgress}
+            userFollowingInProgress={props.userFollowingInProgress}
         />)
     })
     return (
@@ -47,4 +61,4 @@ const Contacts = (props) => {
     )
 }
 
-export default Contacts;
+export default Contacts

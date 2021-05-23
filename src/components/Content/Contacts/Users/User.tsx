@@ -1,24 +1,23 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {NavLink} from "react-router-dom";
 import classes from "./User.module.css";
 
-const User = (props) => {
-    /*let toggle = () => {
-        props.toggleFollowingInProgress(props.id)
-        props.isAhrlist
-            ? UsersAPI.disahrlistize(props.id).then(resultCode => {
-                if (resultCode === 0) {
-                    props.toggle(props.id)
-                }
-                props.toggleFollowingInProgress(props.id)
-            })
-            : UsersAPI.ahrlistize(props.id).then(resultCode => {
-                if (resultCode === 0) {
-                    props.toggle(props.id)
-                }
-                props.toggleFollowingInProgress(props.id)
-            })
-    }*/
+type TUserProps = {
+    id: number
+    imgsrc: string
+    firstName: string
+    pastName: string
+    position: string | null
+    isAhrlist: boolean
+    location: {
+        city: string
+        country: string
+    } | null
+    userFollowingInProgress: Array<number>
+    toggle: (id: number, isAhrlist: boolean) => void
+}
+
+const User: FC<TUserProps> = (props) => {
     return (
         <div>
             <div className={classes.user}>
@@ -27,13 +26,13 @@ const User = (props) => {
                 </NavLink>
                 {props.isAhrlist ?
                     <button className={classes.buttonA}
-                            disabled={props.UserFollowingInProgress.some(id => id === props.id)}
+                            disabled={props.userFollowingInProgress.some(id => id === props.id)}
                             value={props.id}
                             onClick={() => props.toggle(props.id, props.isAhrlist)}>
                         Ahrlist
                     </button> :
                     <button className={classes.buttonC}
-                            disabled={props.UserFollowingInProgress.some(id => id === props.id)}
+                            disabled={props.userFollowingInProgress.some(id => id === props.id)}
                             value={props.id}
                             onClick={() => props.toggle(props.id, props.isAhrlist)}>
                         Commoner
@@ -42,8 +41,8 @@ const User = (props) => {
                     {props.firstName + " " + props.pastName}
                 </div>
                 <div> {props.position} </div>
-                <div> {props.location.city}</div>
-                <div> {props.location.country} </div>
+                <div> {props.location?.city}</div>
+                <div> {props.location?.country} </div>
             </div>
         </div>
     )

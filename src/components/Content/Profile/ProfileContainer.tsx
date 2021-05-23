@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {FC, useEffect} from 'react'
 import {connect} from "react-redux";
 import {
     getCurrentProfile,
@@ -6,10 +6,10 @@ import {
     sendToUpdateStatus,
     sendToUpdateProfileData,
     sendToUpdateProfilePhoto,
-    actions
+    actions, TProfileData, TProfilePhotos
 } from "../../../redux/ProfileReducer";
 import Profile from './Profile'
-import {Redirect, withRouter} from "react-router-dom";
+import {Redirect, withRouter, RouteComponentProps} from "react-router-dom";
 import {compose} from "redux";
 import {
     selectMyId,
@@ -19,34 +19,63 @@ import {
     selectCurrentProfilePhotos, selectHasPhoto
 } from "../../../selectors/selectors";
 import PreLoader from "../../Preloader";
+import {TState} from "../../../redux/store";
 
+type TPathParams = {
+    id: string
+}
 
+type TMappedState = {
+    CurrentProfile: TProfileData | null
+    CurrentProfilePhotos: TProfilePhotos
+    CurrentStatus: string
+    hasPhoto: boolean
+    isAuth: boolean
+    myId: number | null
+}
 
-const ProfileContainer = (props) => {
-    const refreshProfile = () => {
-        if (props.match.params.id) {
-            props.getCurrentProfile(props.match.params.id)
-            props.getCurrentProfileStatus(props.match.params.id)
-        } else if (props.isAuth) {
-            props.getCurrentProfile(props.myId)
-            props.getCurrentProfileStatus(props.myId)
-        }
-    }
+type TDispatchProps = {
+    getCurrentProfile: (id: number) => void
+    getCurrentProfileStatus: (id: number) => void
+    sendToUpdateStatus: (status: string) => void
+    sendToUpdateProfileData: (formData: any) => void
+    sendToUpdateProfilePhoto: (photoFile: File) => void
+    clearCurrentProfile: () => void
+}
+
+type TProfileContainerProps = TMappedState & TDispatchProps
+
+const ProfileContainer: FC<TProfileContainerProps & RouteComponentProps<TPathParams>>
+    = ({   match, isAuth, myId,
+           CurrentProfile, getCurrentProfile, getCurrentProfileStatus,
+           clearCurrentProfile, ...restProps}) => {
 
     useEffect(() => {
+        const refreshProfile = () => {
+            const userId = Number(match.params.id)
+            if (userId) {
+                getCurrentProfile(userId)
+                getCurrentProfileStatus(userId)
+            } else if (isAuth && myId) {
+                getCurrentProfile(myId)
+                getCurrentProfileStatus(myId)
+            }
+        }
         refreshProfile()
         return () => {
-            props.clearCurrentProfile()
+            clearCurrentProfile()
         }
-    }, [props.match.params.id])
+    }, [match.params.id, clearCurrentProfile, getCurrentProfile, getCurrentProfileStatus, isAuth, myId])
 
-    if (!props.isAuth && !props.match.params.id)
+/*  render*/
+
+    if (!isAuth && !match.params.id)
         return <Redirect to={'/login'}/>
-    else if (props.CurrentProfile === null)
+    else if (!CurrentProfile)
         return <PreLoader/>
-    else if (props.isAuth && props.CurrentProfile.userId === props.myId)
-        return <Profile isAuthedOwner={true} {...props}/>
-    else return <Profile {...props}/>
+    else if (isAuth && CurrentProfile.userId === myId)
+        return <Profile isAuthedOwner={true} CurrentProfile={CurrentProfile} {...restProps}/>
+    else return <Profile CurrentProfile={CurrentProfile} {...restProps}/>
 }
 
 
@@ -87,7 +116,9 @@ const ProfileContainer = (props) => {
     }
 }*/
 
-let mapStateToProps = (state) => {
+
+
+let mapStateToProps = (state: TState): TMappedState => {
     return {
         CurrentProfile: selectCurrentProfile(state),
         CurrentProfilePhotos: selectCurrentProfilePhotos(state),
@@ -98,8 +129,8 @@ let mapStateToProps = (state) => {
     }
 }
 
-export default compose(
-    connect(mapStateToProps, {
+export default compose<React.ComponentType>(
+    connect<TMappedState, TDispatchProps, {}, TState>(mapStateToProps, {
         getCurrentProfile,
         getCurrentProfileStatus,
         sendToUpdateStatus,

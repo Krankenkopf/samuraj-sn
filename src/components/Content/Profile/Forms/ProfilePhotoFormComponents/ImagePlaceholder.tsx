@@ -1,10 +1,17 @@
-import React from "react";
-// import PropTypes from "prop-types";
+import React, {FC} from "react";
 import upload from '../../../../../assets/upload-icon-trn.svg'
 import classes from "../ProfilePhotoForm.module.css"
 import cn from 'classnames'
+import {DropzoneInputProps, DropzoneRootProps} from "react-dropzone";
 
-const Placeholder = ({ getInputProps, getRootProps, error, touched }) => (
+type TPlaceholderProps = {
+    error: any
+    touched: boolean
+    getRootProps: (props?: DropzoneRootProps) => DropzoneRootProps;
+    getInputProps: (props?: DropzoneInputProps) => DropzoneInputProps;
+}
+
+const Placeholder: FC<TPlaceholderProps> = ({ getInputProps, getRootProps, error, touched }) => (
     <div
         {...getRootProps()}
         className={cn(classes.placeholderPreview, {[classes.hasError]: error && touched})}
@@ -14,12 +21,5 @@ const Placeholder = ({ getInputProps, getRootProps, error, touched }) => (
         <p>Click or drag image file to this area to upload.</p>
     </div>
 );
-
-/*Placeholder.propTypes = {         this is smth important
-    error: PropTypes.string,
-    getInputProps: PropTypes.func.isRequired,
-    getRootProps: PropTypes.func.isRequired,
-    touched: PropTypes.bool
-};*/
 
 export default Placeholder;

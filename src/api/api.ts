@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {IncomingDataUserType} from "../redux/ContactsReducer";
+import {TIncomingDataUser} from "../redux/ContactsReducer";
 
 
 export const instance = axios.create(
@@ -14,7 +14,7 @@ export const instance = axios.create(
 )
 
 export type TGetItems = {
-    items: Array<IncomingDataUserType>
+    items: Array<TIncomingDataUser>
     totalCount: number
     error: string | null
 }

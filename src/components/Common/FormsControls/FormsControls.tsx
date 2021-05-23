@@ -8,7 +8,7 @@ import {TFieldValidator} from "../../../utilities/Validators";
 //--------------simple form input field creator---------------------------------------
 
 export function simpleInputFieldCreator<TFormDataKeys extends string> (name: TFormDataKeys,
-                                                                       validate: Array<TFieldValidator>,
+                                                                       validate: Array<TFieldValidator> | null,
                                                                        placeholder: string) {
     return <Field name={name} component={Input} validate={validate} placeholder={placeholder}/>
 }

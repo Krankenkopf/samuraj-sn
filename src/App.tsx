@@ -52,7 +52,6 @@ class App extends React.Component<TMappedState & TDispatchProps> {
               <Route path='/activities' render={() => <Activities/>}/>
               <Route path='/contacts' render={() => <ContactsContainer/>}/>
               <Route path='/profile/:id?' render={() => <ProfileContainer/>}/>
-              {/*@ts-ignore*/}
               <Route path='/chat' render={() => <ChatContainer/>}/>
               <Route path='/ads' render={() => <Ads/>}/>
             </div>

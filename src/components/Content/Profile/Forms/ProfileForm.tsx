@@ -1,14 +1,19 @@
-import React from "react";
-import {Field, reduxForm} from "redux-form";
+import React, {FC} from "react";
+import {Field, Form, InjectedFormProps, reduxForm} from "redux-form";
 import {Checkbox, simpleInputFieldCreator, Textarea} from "../../../Common/FormsControls/FormsControls";
 import {requiredField} from "../../../../utilities/Validators";
+import {TProfileData} from "../../../../redux/ProfileReducer";
 
-const ProfileForm = (props) => {
+type TProfileFormProps = InjectedFormProps<TProfileData>
+
+type TProfileFormDataKeys = Extract<keyof TProfileData, string>
+
+const ProfileForm: FC<TProfileFormProps> = (props) => {
     return (
-        <form onSubmit={props.handleSubmit}>
+        <Form onSubmit={props.handleSubmit}>
             <div>
                 <label> Your name </label>
-                {simpleInputFieldCreator('fullName', [requiredField], 'Full Name')}
+                {simpleInputFieldCreator<TProfileFormDataKeys>('fullName', [requiredField], 'Full Name')}
             </div>
             <div>
                 <label>Describe yourself</label>
@@ -50,8 +55,8 @@ const ProfileForm = (props) => {
                 {simpleInputFieldCreator('contacts.website', null, 'Your website')}
             </div>
             <button type={'submit'} autoFocus={true}> Submit </button>
-        </form>
+        </Form>
     )
 }
 
-export default reduxForm({form: 'profileForm'})(ProfileForm)
+export default reduxForm<TProfileData, {}, string>({form: 'profileForm'})(ProfileForm)
