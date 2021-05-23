@@ -1,7 +1,8 @@
 import axios from 'axios';
-import {TFormData} from "../components/Login/Login";
+import {IncomingDataUserType} from "../redux/ContactsReducer";
 
-const instance = axios.create(
+
+export const instance = axios.create(
     {
         baseURL: 'https://social-network.samuraijs.com/api/1.0/',
         withCredentials: true,
@@ -12,28 +13,16 @@ const instance = axios.create(
     }
 )
 
-export const UsersAPI = {
-    getUsers(PageSize: number, CurrentPage: number) {
-        return (
-            instance.get(`users?count=${PageSize}&page=${CurrentPage}`).then(response => {
-                return {
-                    data: response.data,
-                    status: response.status
-                }
-            })
-        )
-    },
+export type TGetItems = {
+    items: Array<IncomingDataUserType>
+    totalCount: number
+    error: string | null
+}
 
-    ahrlistize(id: number) {
-        return (
-            instance.post(`follow/${id}`).then(response => response.data.resultCode)
-            )
-    },
-    disahrlistize(id: number) {
-        return (
-            instance.delete(`follow/${id}`).then(response => response.data.resultCode)
-        )
-    }
+export type TResponse<TData = {}, TRC = ResultCodes> = {
+    data: TData
+    resultCode: TRC
+    messages: Array<string>
 }
 
 export enum ResultCodes {
@@ -41,64 +30,3 @@ export enum ResultCodes {
     ERROR = 1
 }
 
-type TAuthMeResponse = {
-    data: { id: number, email: string, login: string }
-    resultCode: number
-    messages: Array<string>
-}
-
-export const AuthAPI = {
-    login({email, password, rememberMe=false}: TFormData) {
-        return (
-            instance.post(`auth/login`, {email, password, rememberMe})
-        )
-    },
-
-    logout() {
-        return (
-            instance.delete(`auth/login`)
-        )
-    },
-
-    authMe() {
-        return (
-            instance.get<TAuthMeResponse>(`auth/me`).then(response => {
-                return {resultCode: response.data.resultCode, ...response.data.data, }
-            })
-        )
-    },
-}
-
-export const ProfileAPI = {
-    getCurrentProfile(userId: number) {
-        return (
-            instance.get(`profile/${userId}`).then(response => response.data)
-        )
-    },
-    getCurrentProfileStatus(userId: number) {
-        return (
-            instance.get(`profile/status/${userId}`).then(response => response.data)
-        )
-    },
-    sendToUpdateStatus(status: string) {
-        return (
-            instance.put(`profile/status`, {status}).then(response => response.data.resultCode)
-        )
-    },
-    sendToUpdateProfileData(formData: number) {
-        return (
-            instance.put(`profile`, formData).then(response => response.data)
-        )
-    },
-    sendToUpdateProfilePhoto(photoFile: any) {
-        const formData = new FormData();
-        formData.append("image", photoFile);
-        return (
-            instance.put(`profile/photo`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(response => response.data)
-        )
-    }
-}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from "react-redux";
 import Contacts from "./Contacts";
 import {
@@ -12,7 +12,15 @@ import {
 } from "../../../redux/ContactsReducer";
 import {usersSelector} from "../../../selectors/selectors";
 
-class ContactsContainer extends React.Component {
+const ContactsContainer = (props) => {
+    useEffect(() => {
+        props.setUsers(props.PageSize, props.CurrentPage)
+    }, [])
+
+    return <Contacts {...props}/>
+}
+
+/*class ContactsContainerC extends React.Component {
 
     componentDidMount() {
         this.props.setUsers(this.props.PageSize, this.props.CurrentPage)
@@ -21,7 +29,7 @@ class ContactsContainer extends React.Component {
     render() {
         return <Contacts {...this.props}/>;
     }
-}
+}*/
 
 
 

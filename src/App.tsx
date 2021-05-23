@@ -38,6 +38,8 @@ class App extends React.Component<TMappedState & TDispatchProps> {
           </div>
       )
 
+
+
     return (
         <BrowserRouter>
           <div className='app-wrapper'>

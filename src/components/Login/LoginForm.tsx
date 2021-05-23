@@ -1,20 +1,27 @@
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {TFormData} from "./Login";
 import React, {FC} from "react";
 import {simpleInputFieldCreator, Input} from "../Common/FormsControls/FormsControls";
 import {requiredField} from "../../utilities/Validators";
 import classes from "./Login.module.css";
 
-type TLoginFormProps = InjectedFormProps<TFormData>
+type TLoginFormProps = InjectedFormProps<TLoginFormData>
+
+export type TLoginFormData = {
+    email: string
+    password: string
+    rememberMe: boolean
+}
+
+type TLoginFormDataKeys = Extract<keyof TLoginFormData, string>
 
 const LoginForm: FC<TLoginFormProps> = ({handleSubmit}) => {
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                {simpleInputFieldCreator('email', [requiredField], 'Login')}
+                {simpleInputFieldCreator<TLoginFormDataKeys>('email', [requiredField], 'Login')}
             </div>
             <div>
-                {simpleInputFieldCreator('password', [requiredField], 'Password')}
+                {simpleInputFieldCreator<TLoginFormDataKeys>('password', [requiredField], 'Password')}
             </div>
             <div className={classes.checkbox}>
                 <Field type={'checkbox'} name={'rememberMe'} component={Input}/> Remember me
@@ -24,4 +31,4 @@ const LoginForm: FC<TLoginFormProps> = ({handleSubmit}) => {
     )
 }
 
-export const LoginReduxForm = reduxForm<TFormData, {}, string>({form: 'login'})(LoginForm)
+export const LoginReduxForm = reduxForm<TLoginFormData, {}, string>({form: 'login'})(LoginForm)

@@ -1,8 +1,9 @@
-import {ProfileAPI, ResultCodes} from "../api/api";
+import {ResultCodes} from "../api/api";
 import imgdefault from '../assets/default-avatar.png'
 import {ThunkAction} from "redux-thunk";
-import {TState} from "./store";
+import {TInferActions, TState, TThunk} from "./store";
 import {stopSubmit} from "redux-form";
+import {ProfileAPI} from "../api/profile-api";
 
 const SET_CURRENT_PROFILE = 'SET_CURRENT_PROFILE'
 const SET_STATUS = 'SET_STATUS'
@@ -10,7 +11,7 @@ const UPDATE_STATUS = 'UPDATE_STATUS'
 const UPDATE_PROFILE_PHOTO = 'UPDATE_PROFILE_PHOTO'
 const CLEAR_CURRENT_PROFILE = 'CLEAR_CURRENT_PROFILE'
 
-type TIncomingDataProfile = TProfileData & TProfilePhotos
+export type TIncomingDataProfile = TProfileData & TProfilePhotos
 
 type TProfileData = {
     userId: number
@@ -30,7 +31,7 @@ type TProfileData = {
     }
 }
 
-type TProfilePhotos = {
+export type TProfilePhotos = {
     photos: {
         small: string | null
         large: string | null
@@ -38,8 +39,7 @@ type TProfilePhotos = {
 }
 
 type TInitialState = typeof initialState
-type TActions = SetCurrentProfileActionType | SetCurrentProfileStatusActionType
-    | UpdateStatusActionType | UpdateProfilePhotoActionType | ClearCurrentProfileActionType
+type TActions = TInferActions<typeof actions>
 
 let initialState = {
     CurrentProfile: null as TProfileData | null,
@@ -95,77 +95,46 @@ const profileReducer = (state = initialState, action: TActions): TInitialState =
     }
 }
 
-type SetCurrentProfileActionType = {
-    type: typeof SET_CURRENT_PROFILE
-    data: TIncomingDataProfile
+export const actions = {
+    setCurrentProfile: (data: TIncomingDataProfile) => {
+        return {type: SET_CURRENT_PROFILE, data: data} as const},
+
+    setCurrentProfileStatus: (status: string) => {
+        return {type: SET_STATUS, status: status} as const},
+
+    updateStatus: (status: string) => {
+        return {type: UPDATE_STATUS, status: status} as const},
+
+    updateProfilePhoto: (data: any) => {
+        return {type: UPDATE_PROFILE_PHOTO, data: data} as const},
+
+    clearCurrentProfile: () => ({type: CLEAR_CURRENT_PROFILE} as const)
 }
 
-export const setCurrentProfile = (data: TIncomingDataProfile): SetCurrentProfileActionType => {
-    return {type: SET_CURRENT_PROFILE, data: data}
-}
-
-type SetCurrentProfileStatusActionType = {
-    type: typeof SET_STATUS
-    status: string
-}
-
-export const setCurrentProfileStatus = (status: string): SetCurrentProfileStatusActionType => {
-    return {type: SET_STATUS, status: status}
-}
-
-type UpdateStatusActionType = {
-    type: typeof UPDATE_STATUS
-    status: string
-}
-
-export const updateStatus = (status: string): UpdateStatusActionType => {
-    return {type: UPDATE_STATUS, status: status}
-}
-
-type UpdateProfilePhotoActionType = {
-    type: typeof UPDATE_PROFILE_PHOTO
-    data: any
-}
-
-export const updateProfilePhoto = (data: any): UpdateProfilePhotoActionType => {
-    return {type: UPDATE_PROFILE_PHOTO, data: data}
-}
-
-type ClearCurrentProfileActionType = {
-    type: typeof CLEAR_CURRENT_PROFILE
-}
-
-export const clearCurrentProfile = (): ClearCurrentProfileActionType => {
-    return {type: CLEAR_CURRENT_PROFILE}
-}
-
-type TThunk = ThunkAction<Promise<void>, TState, any, TActions>
-
-
-export const getCurrentProfile = (userId: number): TThunk => {
+export const getCurrentProfile = (userId: number): TThunk<TActions> => {
     return async (dispatch) => {
         const data = await ProfileAPI.getCurrentProfile(userId)
-            dispatch(setCurrentProfile(data))
+            dispatch(actions.setCurrentProfile(data))
         }
 }
 
-export const getCurrentProfileStatus = (userId: number): TThunk => {
+export const getCurrentProfileStatus = (userId: number): TThunk<TActions> => {
     return async (dispatch) => {
         const status = await ProfileAPI.getCurrentProfileStatus(userId)
-            dispatch(setCurrentProfileStatus(status))
+            dispatch(actions.setCurrentProfileStatus(status))
     }
 }
 
-export const sendToUpdateStatus = (status: string): TThunk => {
+export const sendToUpdateStatus = (status: string): TThunk<TActions> => {
     return async (dispatch) => {
         const resultCode = await ProfileAPI.sendToUpdateStatus(status)
             if (resultCode === ResultCodes.SUCCESS)
-                dispatch(updateStatus(status))
-            else dispatch(updateStatus('Exceeded max length'))
+                dispatch(actions.updateStatus(status))
+            else dispatch(actions.updateStatus('Exceeded max length'))
     }
 }
 
-export const sendToUpdateProfileData = (formData: any): TThunk => {
+export const sendToUpdateProfileData = (formData: any): TThunk<TActions> => {
     return async (dispatch) => {
         const response = await ProfileAPI.sendToUpdateProfileData(formData)
         if (response.resultCode === ResultCodes.SUCCESS)
@@ -177,11 +146,11 @@ export const sendToUpdateProfileData = (formData: any): TThunk => {
     }
 }
 
-export const sendToUpdateProfilePhoto = (photoFile: any): TThunk => {
+export const sendToUpdateProfilePhoto = (photoFile: any): TThunk<TActions> => {
     return async (dispatch) => {
         const response = await ProfileAPI.sendToUpdateProfilePhoto(photoFile)
         if (response.resultCode === ResultCodes.SUCCESS)
-            await dispatch(updateProfilePhoto(response.data))
+            await dispatch(actions.updateProfilePhoto(response.data))
     }
 }
 

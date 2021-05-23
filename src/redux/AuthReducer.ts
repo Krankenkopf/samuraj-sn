@@ -1,8 +1,8 @@
-import {AuthAPI, ResultCodes} from "../api/api";
+import {ResultCodes} from "../api/api";
 import {FormAction, stopSubmit} from "redux-form";
-import {ThunkAction} from "redux-thunk";
-import {TState} from "./store";
-import {TFormData} from "../components/Login/Login";
+import {TInferActions, TThunk} from "./store";
+import { TLoginFormData } from "../components/Login/LoginForm";
+import {AuthAPI} from "../api/auth-api";
 
 const AUTH = 'AUTH'
 
@@ -13,7 +13,7 @@ type TInitialState = {
     isAuth: boolean
 }
 
-type TActions = AuthActionType | FormAction
+type TActions = TInferActions<typeof actions> | FormAction
 
 const initialState: TInitialState = {
     email: null,
@@ -45,16 +45,6 @@ const authReducer = (state = initialState, action: any): TInitialState => {
 
 }
 
-type AuthActionType = {
-    type: typeof AUTH
-    data: {
-        email: string | null
-        id: number | null
-        login: string | null
-    }
-    resultCode: number
-}
-
 type AuthDataType = {
     resultCode: number
     email: string | null
@@ -62,18 +52,17 @@ type AuthDataType = {
     login: string | null
 }
 
-export const auth = ({resultCode, email, id, login}: AuthDataType): AuthActionType => {
-    return {type: 'AUTH', data: {email, id, login}, resultCode: resultCode}
+export const actions = {
+    auth: ({resultCode, email, id, login}: AuthDataType) => {
+        return {type: 'AUTH', data: {email, id, login}, resultCode: resultCode} as const}
 }
 
-export type TAuthThunk = ThunkAction<Promise<void>, TState, null, TActions>
-
-export const authMe = (): TAuthThunk => async (dispatch) => {
+export const authMe = (): TThunk<TActions> => async (dispatch) => {
     const authData: AuthDataType = await AuthAPI.authMe()
-    dispatch(auth(authData))
+    dispatch(actions.auth(authData))
 }
 
-export const login = ({email, password, rememberMe}: TFormData): TAuthThunk => async (dispatch) => {
+export const login = ({email, password, rememberMe}: TLoginFormData): TThunk<TActions> => async (dispatch) => {
     const response = await AuthAPI.login({email, password, rememberMe})
     if (response.data.resultCode === ResultCodes.SUCCESS) {
         await dispatch(authMe())
@@ -82,10 +71,10 @@ export const login = ({email, password, rememberMe}: TFormData): TAuthThunk => a
         dispatch(action)
     }
 }
-export const logout = () => async (dispatch: any) => {
+export const logout = (): TThunk<TActions> => async (dispatch) => {
     const response = await AuthAPI.logout()
     if (response.data.resultCode === ResultCodes.SUCCESS) {
-        dispatch(authMe())
+        await dispatch(authMe())
     }
 }
 export default authReducer

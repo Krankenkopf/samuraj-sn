@@ -1,8 +1,9 @@
 import imgdefault from "../assets/default-avatar.png"
-import {UsersAPI} from "../api/api";
 import {Dispatch} from "react";
 import {TState} from "./store";
 import { ThunkAction } from "redux-thunk";
+import {UsersAPI} from "../api/users-api";
+import {TGetItems} from "../api/api";
 
 const TOGGLE = 'TOGGLE';
 const GET_USERS = 'GET_USERS';
@@ -11,11 +12,7 @@ const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const IS_FETCHING_SWITCH = 'IS_FETCHING_SWITCH';
 const TOGGLE_FOLLOWING_IN_PROGRESS = 'TOGGLE_FOLLOWING_IN_PROGRESS'
 
-type TIncomingData = {
-    items: Array<IncomingDataUserType>
-    totalCount: number
-    error: string | null
-}
+
 
 export type IncomingDataUserType = {
     id: number
@@ -173,10 +170,10 @@ export const getUsers = (contacts: Array<InternalDataUserType>): GetUsersActionT
 
 type ReproccingUsersActionType = {
     type: typeof REPROCCING_USERS
-    data: TIncomingData
+    data: TGetItems
 }
 
-export const reproccingUsers = (data: TIncomingData): ReproccingUsersActionType => {
+export const reproccingUsers = (data: TGetItems): ReproccingUsersActionType => {
     return {type: REPROCCING_USERS, data: data};
 }
 

@@ -5,24 +5,18 @@ import {Redirect} from "react-router-dom";
 import classes from './Login.module.css'
 import {selectIsAuth} from "../../selectors/selectors";
 import {TState} from "../../redux/store";
-import {LoginReduxForm} from "./LoginForm";
+import {LoginReduxForm, TLoginFormData} from "./LoginForm";
 
 type TMappedState = { isAuth:  boolean }
 
 type TDispatchProps = {
-    login:  ({email, password, rememberMe}: TFormData) => void
+    login:  ({email, password, rememberMe}: TLoginFormData) => void
 }
 
-type TLogin = TMappedState & TDispatchProps
+type TLoginProps = TMappedState & TDispatchProps
 
-export type TFormData = {
-    email: string
-    password: string
-    rememberMe: boolean
-}
-
-const Login: FC<TLogin> = ({login, isAuth}) => {
-    let onSubmit = (formData: TFormData) =>  {
+const Login: FC<TLoginProps> = ({login, isAuth}) => {
+    let onSubmit = (formData: TLoginFormData) =>  {
         login(formData)
     }
     if (isAuth) return <Redirect to={'/profile'}/>

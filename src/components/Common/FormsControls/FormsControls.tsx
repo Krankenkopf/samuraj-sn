@@ -4,9 +4,12 @@ import cn from "classnames"
 import {Field, WrappedFieldProps} from "redux-form";
 import {TFieldValidator} from "../../../utilities/Validators";
 
+
 //--------------simple form input field creator---------------------------------------
 
-export const simpleInputFieldCreator = (name: string, validate: Array<TFieldValidator>, placeholder: string) => {
+export function simpleInputFieldCreator<TFormDataKeys extends string> (name: TFormDataKeys,
+                                                                       validate: Array<TFieldValidator>,
+                                                                       placeholder: string) {
     return <Field name={name} component={Input} validate={validate} placeholder={placeholder}/>
 }
 

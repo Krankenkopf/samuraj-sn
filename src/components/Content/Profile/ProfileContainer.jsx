@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {connect} from "react-redux";
 import {
     getCurrentProfile,
     getCurrentProfileStatus,
     sendToUpdateStatus,
-    clearCurrentProfile, sendToUpdateProfileData, sendToUpdateProfilePhoto
+    sendToUpdateProfileData,
+    sendToUpdateProfilePhoto,
+    actions
 } from "../../../redux/ProfileReducer";
 import Profile from './Profile'
 import {Redirect, withRouter} from "react-router-dom";
@@ -18,8 +20,38 @@ import {
 } from "../../../selectors/selectors";
 import PreLoader from "../../Preloader";
 
-class ProfileContainer extends React.Component {
 
+
+const ProfileContainer = (props) => {
+    const refreshProfile = () => {
+        if (props.match.params.id) {
+            props.getCurrentProfile(props.match.params.id)
+            props.getCurrentProfileStatus(props.match.params.id)
+        } else if (props.isAuth) {
+            props.getCurrentProfile(props.myId)
+            props.getCurrentProfileStatus(props.myId)
+        }
+    }
+
+    useEffect(() => {
+        refreshProfile()
+        return () => {
+            props.clearCurrentProfile()
+        }
+    }, [props.match.params.id])
+
+    if (!props.isAuth && !props.match.params.id)
+        return <Redirect to={'/login'}/>
+    else if (props.CurrentProfile === null)
+        return <PreLoader/>
+    else if (props.isAuth && props.CurrentProfile.userId === props.myId)
+        return <Profile isAuthedOwner={true} {...props}/>
+    else return <Profile {...props}/>
+}
+
+
+
+/*class ProfileContainer extends React.Component {
     refreshProfile() {
         if (this.props.match.params.id) {
             this.props.getCurrentProfile(this.props.match.params.id)
@@ -41,7 +73,7 @@ class ProfileContainer extends React.Component {
     }
 
     componentWillUnmount() {
-        this.props.clearCurrentProfile()
+        this.props.actions.clearCurrentProfile()
     }
 
     render() {
@@ -53,7 +85,7 @@ class ProfileContainer extends React.Component {
             return <Profile isAuthedOwner={true} {...this.props}/>
         else return <Profile {...this.props}/>
     }
-}
+}*/
 
 let mapStateToProps = (state) => {
     return {
@@ -73,7 +105,7 @@ export default compose(
         sendToUpdateStatus,
         sendToUpdateProfileData,
         sendToUpdateProfilePhoto,
-        clearCurrentProfile
+        clearCurrentProfile: actions.clearCurrentProfile
     }),
     withRouter)
 (ProfileContainer)

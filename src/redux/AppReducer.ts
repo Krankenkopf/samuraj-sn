@@ -1,18 +1,18 @@
 import {authMe} from "./AuthReducer";
 import {ThunkAction} from "redux-thunk";
-import {TState} from "./store";
+import {TInferActions, TState} from "./store";
 
 const SET_INITIALISING_STATUS = 'SET_INITIALISING_STATUS'
 
-type TInitialState = {
-    initialisingComplete: boolean
-}
 
-type TActions = InitialisingCompleteActionType
 
-let initialState: TInitialState = {
+type TActions = TInferActions<typeof actions>
+
+const initialState = {
     initialisingComplete: false
 }
+
+type TInitialState = typeof initialState
 
 const appReducer = (state=initialState, action: TActions): TInitialState => {
     switch (action.type) {
@@ -27,6 +27,10 @@ const appReducer = (state=initialState, action: TActions): TInitialState => {
 }
 
 type InitialisingCompleteActionType = { type: typeof SET_INITIALISING_STATUS}
+
+export const actions = {
+    initialisingComplete: () => ({type: SET_INITIALISING_STATUS} as const)
+}
 
 const initialisingComplete = ():InitialisingCompleteActionType  => ({type: SET_INITIALISING_STATUS})
 
